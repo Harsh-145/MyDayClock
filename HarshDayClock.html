@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HARSH YADAV // DOOMSDAY IS COMING</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+  body, html {
+    width: 100vw; height: 100vh; overflow: hidden;
+    background: #000000;
+    font-family: 'Montserrat', sans-serif;
+    color: #ffffff;
+  }
+
+  .cinema-stage {
+    position: relative;
+    width: 100vw; height: 100vh;
+    background: #020502;
+    overflow: hidden;
+  }
+
+  /* 1. Multi-Wallpaper Cross-Fade Layers with Slow IMAX Camera Push-In */
+  .bg-layer {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center 22%;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
+    z-index: 1;
+    will-change: transform, opacity;
+  }
+  .bg-layer.active {
+    opacity: 1;
+    animation: imaxPush 18s infinite alternate ease-in-out;
+  }
+  @keyframes imaxPush {
+    0% { transform: scale(1.0); }
+    100% { transform: scale(1.045); }
+  }
+
+  /* Subtle Second-Tick Rim Flash Overlay */
+  #tickFlashOverlay {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 52% 35%, rgba(185, 255, 110, 0.08), transparent 65%);
+    opacity: 0;
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity 0.12s ease;
+  }
+
+  /* 2. Live Golden-Emerald Sparks & Ash Canvas (Matches the sparks in your 4 images) */
+  #sparksCanvas {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  /* 3. Cinema Shadow Cushion Behind Clock (Keeps upper 65% face/mask 100% crystal clear) */
+  .shadow-cushion {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 42%, transparent 45%, rgba(0, 0, 0, 0.72) 88%, rgba(0, 0, 0, 0.95) 100%),
+      linear-gradient(to bottom,
+        rgba(0,0,0,0.35) 0%,
+        transparent 14%,
+        transparent 54%,
+        rgba(1, 5, 1, 0.76) 69%,
+        rgba(0, 0, 0, 0.92) 84%,
+        rgba(0, 0, 0, 0.98) 100%);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  /* IMAX Letterbox Bars */
+  .letterbox-top, .letterbox-bottom {
+    position: absolute; left: 0; width: 100%; height: 3.8vh;
+    background: #000000; z-index: 9; pointer-events: none;
+  }
+  .letterbox-top { top: 0; }
+  .letterbox-bottom { bottom: 0; }
+
+  /* 4. EXACT SCREENSHOT COUNTDOWN TYPOGRAPHY (Calibrated to y = 74% below face/mask) */
+  .clock-container {
+    position: absolute;
+    left: 50%; top: 74%;
+    transform: translate(-50%, -50%);
+    z-index: 7;
+    text-align: center;
+    width: 96%;
+    max-width: 1180px;
+  }
+
+  .doomsday-header {
+    font-size: clamp(1.05rem, 2.15vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    padding-left: 0.22em;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.98), 0 0 26px rgba(170, 255, 110, 0.38);
+    margin-bottom: clamp(0.55rem, 1.3vh, 1.05rem);
+  }
+
+  .clock-row {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: clamp(0.32rem, 1.3vw, 1.15rem);
+  }
+
+  .time-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: clamp(62px, 10.5vw, 134px);
+  }
+
+  .time-digits {
+    font-size: clamp(2.1rem, 5.3vw, 4.75rem);
+    font-weight: 600;
+    letter-spacing: 0.17em;
+    padding-left: 0.17em;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.04;
+    text-shadow: 0 6px 26px rgba(0,0,0,0.98), 0 0 30px rgba(185, 255, 130, 0.28);
+    transition: transform 0.08s ease, text-shadow 0.08s ease;
+  }
+  .time-digits.tick-pop {
+    transform: scale(1.042);
+    text-shadow: 0 6px 26px rgba(0,0,0,0.98), 0 0 42px rgba(215, 255, 160, 0.85);
+  }
+
+  .time-colon {
+    font-size: clamp(1.8rem, 4.3vw, 3.8rem);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.94);
+    transform: translateY(-0.12em);
+    text-shadow: 0 4px 20px rgba(0,0,0,0.98);
+  }
+
+  .time-label {
+    margin-top: clamp(0.45rem, 1.05vh, 0.78rem);
+    font-size: clamp(0.52rem, 0.8vw, 0.74rem);
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    padding-left: 0.25em;
+    color: rgba(240, 250, 236, 0.92);
+    text-transform: uppercase;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.98);
+  }
+
+  /* 5. ONE-TIME 4-IMAGE LOADER MODAL */
+  #loaderModal {
+    position: absolute; inset: 0;
+    z-index: 30;
+    background: rgba(2, 7, 2, 0.9);
+    backdrop-filter: blur(14px);
+    display: flex; justify-content: center; align-items: center;
+    padding: 20px;
+  }
+  .modal-card {
+    max-width: 610px; width: 100%;
+    background: linear-gradient(145deg, rgba(12, 34, 10, 0.97), rgba(3, 10, 3, 0.99));
+    border: 1.5px solid #a6ff68;
+    border-radius: 12px;
+    padding: 30px 26px;
+    text-align: center;
+    box-shadow: 0 0 55px rgba(140, 245, 80, 0.35), 0 20px 60px rgba(0,0,0,0.98);
+  }
+  .modal-card h2 {
+    font-size: 1.15rem; letter-spacing: 0.18em; color: #c8ff8a;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .modal-card p {
+    font-size: 0.8rem; line-height: 1.6; color: #dcf0d8; margin-bottom: 20px;
+  }
+  .upload-big-btn {
+    display: block;
+    border: 2px dashed #b2ff78;
+    background: rgba(28, 78, 20, 0.52);
+    padding: 22px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.84rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    color: #ffffff;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    margin-bottom: 14px;
+  }
+  .upload-big-btn:hover {
+    background: rgba(48, 125, 34, 0.75);
+    box-shadow: 0 0 28px rgba(175, 255, 110, 0.55);
+  }
+
+  /* Sound Unlock Floating Pill (Shown when returning after images are already saved) */
+  #audioUnlockPill {
+    position: absolute;
+    top: 10vh; left: 50%;
+    transform: translateX(-50%);
+    z-index: 25;
+    display: none;
+    background: linear-gradient(135deg, rgba(24, 72, 16, 0.95), rgba(6, 20, 4, 0.98));
+    border: 1.5px solid #b8ff6b;
+    color: #ffffff;
+    padding: 11px 26px;
+    border-radius: 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 0 28px rgba(160, 255, 95, 0.55);
+  }
+
+  /* 6. TOP AUTO-HIDING HUD */
+  .top-hud {
+    position: absolute;
+    top: 4.8vh; left: 16px; right: 16px;
+    z-index: 15;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 8px;
+    opacity: 0.18;
+    transition: opacity 0.3s ease;
+  }
+  .top-hud:hover { opacity: 1; }
+  .hud-grp { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .hud-btn, .hud-sel {
+    background: rgba(5, 15, 5, 0.88);
+    border: 1px solid rgba(155, 245, 95, 0.45);
+    color: #ebffdf;
+    padding: 6px 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+  }
+  .hud-btn:hover, .hud-sel:hover, .hud-btn.active-bg {
+    background: rgba(42, 110, 24, 0.92);
+    border-color: #c8ff8a;
+    box-shadow: 0 0 12px rgba(160, 255, 95, 0.45);
+  }
+
+  /* 7. BOTTOM GTU PDF TRACKER */
+  .bottom-hud {
+    position: absolute;
+    bottom: 4.8vh; left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+    width: 92%; max-width: 980px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .tracker-pill {
+    background: rgba(4, 14, 4, 0.85);
+    border: 1px solid rgba(150, 240, 90, 0.42);
+    padding: 7px 22px;
+    border-radius: 30px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #d2ffad;
+    cursor: pointer;
+    opacity: 0.55;
+    transition: all 0.25s ease;
+  }
+  .tracker-pill:hover { opacity: 1; border-color: #c8ff8a; background: rgba(18, 52, 12, 0.95); }
+  .tracker-drawer {
+    display: none;
+    width: 100%;
+    max-height: 46vh;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    background: rgba(3, 10, 3, 0.96);
+    border: 1px solid rgba(155, 245, 95, 0.5);
+    border-radius: 8px;
+    padding: 16px 20px;
+    backdrop-filter: blur(16px);
+  }
+  .tracker-drawer.open { display: block; }
+  .tracker-drawer h4 {
+    font-size: 0.78rem; letter-spacing: 0.16em; color: #b8ff6b;
+    margin-bottom: 10px; text-transform: uppercase;
+  }
+  .tracker-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+    gap: 9px;
+  }
+  .t-card {
+    background: rgba(14, 34, 12, 0.72);
+    border: 1px solid rgba(125, 210, 80, 0.3);
+    padding: 9px 12px; border-radius: 6px;
+    font-size: 0.71rem; line-height: 1.45;
+  }
+  .t-card strong { color: #c2ff85; display: block; margin-bottom: 3px; }
+  .t-card label { display: flex; gap: 7px; align-items: flex-start; cursor: pointer; }
+  .t-card input { accent-color: #7ee840; margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<div class="cinema-stage">
+  <div class="letterbox-top"></div>
+
+  <!-- 4 Full-HD Cross-Fading Wallpaper Slots -->
+  <div class="bg-layer active" id="bgSlot0"></div>
+  <div class="bg-layer" id="bgSlot1"></div>
+  <div class="bg-layer" id="bgSlot2"></div>
+  <div class="bg-layer" id="bgSlot3"></div>
+
+  <div id="tickFlashOverlay"></div>
+  <canvas id="sparksCanvas"></canvas>
+  <div class="shadow-cushion"></div>
+
+  <!-- One-Time Multi-Image Setup Modal -->
+  <div id="loaderModal">
+    <div class="modal-card">
+      <h2>👑 LOAD YOUR 4 DOOMSDAY MASTERPIECE IMAGES</h2>
+      <p>
+        Click below and <strong>select all 4 of your generated Doom images at once</strong> (hold <code>Ctrl</code> or drag-select all 4 files).<br>
+        They will be stored permanently at <strong>100% Full HD</strong> inside your browser's database and linked automatically to your exams &amp; "Tie-Tik" audio!
+      </p>
+      <label class="upload-big-btn">
+        🔥 SELECT ALL 4 OF YOUR DOOM IMAGES AT ONCE
+        <input type="file" accept="image/*" multiple style="display:none" onchange="handleMultiWallpapers(event)">
+      </label>
+    </div>
+  </div>
+
+  <!-- Audio Unlock Button (Appears on reload when images are already stored) -->
+  <button id="audioUnlockPill" onclick="unlockAudioEngine()">
+    🔊 CLICK TO START "TIE-TIK" CLOCK &amp; DOOMSDAY THEME
+  </button>
+
+  <!-- Top Controls -->
+  <div class="top-hud">
+    <div class="hud-grp">
+      <!-- Milestone & Task Selector (Auto-switches Wallpaper + Audio Tempo) -->
+      <select id="milestoneSel" class="hud-sel" onchange="onMilestoneChange()">
+        <option value="2026-12-18T13:00:00+05:30|DOOMSDAY IS COMING|0|1">
+          🟢 DOOMSDAY: GTU SEM 7 FINALE (18 DEC 2026)
+        </option>
+        <option value="2026-12-01T10:30:00+05:30|MACHINE LEARNING IS COMING|2|1">
+          ⚔️ PAPER 1: MACHINE LEARNING (01 DEC — 36 Qs)
+        </option>
+        <option value="2026-12-03T10:30:00+05:30|COMPILER DESIGN IS COMING|2|2">
+          🔥 PAPER 2: COMPILER DESIGN (03 DEC — 38 Qs)
+        </option>
+        <option value="2026-12-08T10:30:00+05:30|CLOUD COMPUTING IS COMING|0|1">
+          ☁️ PAPER 3: CLOUD COMPUTING (08 DEC — 32 Qs)
+        </option>
+        <option value="2026-12-14T10:30:00+05:30|ARTIFICIAL INTELLIGENCE|3|1">
+          🧠 PAPER 4: ARTIFICIAL INTELLIGENCE (14 DEC — 51 Qs)
+        </option>
+        <option value="2026-12-16T10:30:00+05:30|MOBILE APP DEVELOPMENT|3|2">
+          📱 PAPER 5: MAD EXAM (16 DEC — 40 Qs)
+        </option>
+        <option value="2027-02-06T09:30:00+05:30|GATE 2027 CS IS COMING|1|1">
+          👑 GATE 2027 CS: THE MAIN EVENT (06 FEB 2027)
+        </option>
+        <option value="2027-03-14T09:00:00+05:30|BARC OCES 2027 IS COMING|1|1">
+          ☢️ BARC OCES 2027 CBT (14 MAR 2027)
+        </option>
+      </select>
+
+      <!-- Direct Wallpaper Switcher Buttons -->
+      <button class="hud-btn active-bg" id="btnBg0" onclick="activateWallpaper(0, false)">BG 1: Mask</button>
+      <button class="hud-btn" id="btnBg1" onclick="activateWallpaper(1, false)">BG 2: Cosmic</button>
+      <button class="hud-btn" id="btnBg2" onclick="activateWallpaper(2, false)">BG 3: Cyber</button>
+      <button class="hud-btn" id="btnBg3" onclick="activateWallpaper(3, false)">BG 4: Sovereign</button>
+      <button class="hud-btn" id="btnCycle" onclick="toggleAutoCycle()">🔄 Auto-Cycle: OFF</button>
+    </div>
+
+    <div class="hud-grp">
+      <!-- Sound Mode Selector -->
+      <select id="audioSel" class="hud-sel" onchange="onAudioModeChange()">
+        <option value="cinema">🔊 Audio: "Tie-Tik" + Dark Doomsday Score</option>
+        <option value="tickonly">⏱️ Audio: Pure "Tie-Tik" Clock Only</option>
+        <option value="urgent">⚡ Audio: Urgent Double "Tie-Tik" + Score</option>
+        <option value="study">🧠 Audio: Soft Tick + 40Hz Study Focus</option>
+        <option value="mute">🔇 Audio: Muted</option>
+      </select>
+
+      <label class="hud-btn">
+        🎵 Custom MP3
+        <input type="file" accept="audio/*" style="display:none" onchange="loadCustomTrack(event)">
+      </label>
+      <label class="hud-btn">
+        🖼️ Change 4 Images
+        <input type="file" accept="image/*" multiple style="display:none" onchange="handleMultiWallpapers(event)">
+      </label>
+      <button class="hud-btn" onclick="promptHeading()">✏️ Title</button>
+      <button class="hud-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+    </div>
+  </div>
+
+  <!-- Center Countdown Overlay -->
+  <div class="clock-container" id="clockBox">
+    <div class="doomsday-header" id="headerTitle">DOOMSDAY IS COMING</div>
+    <div class="clock-row">
+      <div class="time-col">
+        <div class="time-digits" id="numMonth">01</div>
+        <div class="time-label">MONTH</div>
+      </div>
+      <div class="time-colon">:</div>
+      <div class="time-col">
+        <div class="time-digits" id="numDays">02</div>
+        <div class="time-label">DAYS</div>
+      </div>
+      <div class="time-colon">:</div>
+      <div class="time-col">
+        <div class="time-digits" id="numHours">13</div>
+        <div class="time-label">HOURS</div>
+      </div>
+      <div class="time-colon">:</div>
+      <div class="time-col">
+        <div class="time-digits" id="numMinutes">32</div>
+        <div class="time-label">MINUTES</div>
+      </div>
+      <div class="time-colon">:</div>
+      <div class="time-col">
+        <div class="time-digits" id="numSeconds">00</div>
+        <div class="time-label">SECONDS</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom GTU Sem 7 PDF Tracker -->
+  <div class="bottom-hud">
+    <div class="tracker-drawer" id="trackerDrawer">
+      <h4>GTU Sem 7 Audited PDF Sprint Checklist (231 Questions Total)</h4>
+      <div class="tracker-grid" id="trackerGrid"></div>
+    </div>
+    <div class="tracker-pill" onclick="document.getElementById('trackerDrawer').classList.toggle('open')">
+      ▲ ACTIVE SPRINT: 16–19 NOV — COMPILER DESIGN PDF (Q1–Q38) | CLICK FOR CHECKLIST ▲
+    </div>
+  </div>
+
+  <div class="letterbox-bottom"></div>
+</div>
+
+<audio id="customMp3" loop style="display:none"></audio>
+
+<script>
+/* =========================================================================
+   1. INDEXED-DB PERMANENT FULL-HD STORAGE FOR ALL 4 WALLPAPERS
+   ========================================================================= */
+const DB_NAME = 'HarshDoomsdayDB_V4';
+const STORE_NAME = 'wallpapers';
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = e => {
+      e.target.result.createObjectStore(STORE_NAME);
+    };
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror = e => reject(e);
+  });
+}
+
+async function saveImagesToDB(dataUrls) {
+  const db = await openDB();
+  const tx = db.transaction(STORE_NAME, 'readwrite');
+  const store = tx.objectStore(STORE_NAME);
+  store.put(dataUrls, 'harsh_4_wallpapers');
+}
+
+async function loadImagesFromDB() {
+  try {
+    const db = await openDB();
+    return new Promise(resolve => {
+      const tx = db.transaction(STORE_NAME, 'readonly');
+      const req = tx.objectStore(STORE_NAME).get('harsh_4_wallpapers');
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => resolve(null);
+    });
+  } catch (e) {
+    return null;
+  }
+}
+
+function applyWallpapersToDOM(urls) {
+  for (let i = 0; i < 4; i++) {
+    const slot = document.getElementById('bgSlot' + i);
+    const url = urls[i % urls.length];
+    slot.style.backgroundImage = `url('${url}')`;
+  }
+}
+
+function handleMultiWallpapers(e) {
+  const files = Array.from(e.target.files);
+  if (!files.length) return;
+
+  const readers = files.slice(0, 4).map(file => new Promise(resolve => {
+    const r = new FileReader();
+    r.onload = ev => resolve(ev.target.result);
+    r.readAsDataURL(file);
+  }));
+
+  Promise.all(readers).then(urls => {
+    applyWallpapersToDOM(urls);
+    saveImagesToDB(urls);
+    document.getElementById('loaderModal').style.display = 'none';
+    unlockAudioEngine();
+  });
+}
+
+window.addEventListener('DOMContentLoaded', async () => {
+  const savedUrls = await loadImagesFromDB();
+  if (savedUrls && savedUrls.length > 0) {
+    applyWallpapersToDOM(savedUrls);
+    document.getElementById('loaderModal').style.display = 'none';
+    document.getElementById('audioUnlockPill').style.display = 'block';
+  }
+});
+
+/* =========================================================================
+   2. WALLPAPER SWITCHER & AUTO-CYCLE ENGINE
+   ========================================================================= */
+let currentBgIdx = 0;
+let autoCycleTimer = null;
+
+function activateWallpaper(idx, fromAuto) {
+  currentBgIdx = idx;
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('bgSlot' + i).classList.toggle('active', i === idx);
+    document.getElementById('btnBg' + i).classList.toggle('active-bg', i === idx);
+  }
+  if (!fromAuto && autoCycleTimer) {
+    clearInterval(autoCycleTimer);
+    autoCycleTimer = null;
+    document.getElementById('btnCycle').textContent = '🔄 Auto-Cycle: OFF';
+  }
+}
+
+function toggleAutoCycle() {
+  const btn = document.getElementById('btnCycle');
+  if (autoCycleTimer) {
+    clearInterval(autoCycleTimer);
+    autoCycleTimer = null;
+    btn.textContent = '🔄 Auto-Cycle: OFF';
+  } else {
+    btn.textContent = '🔄 Auto-Cycle: 30s ON';
+    autoCycleTimer = setInterval(() => {
+      activateWallpaper((currentBgIdx + 1) % 4, true);
+    }, 30000);
+  }
+}
+
+/* =========================================================================
+   3. GOLDEN-EMERALD SPARKS & CATHEDRAL EMBERS (Matches your 4 images!)
+   ========================================================================= */
+const spCanvas = document.getElementById('sparksCanvas');
+const spCtx = spCanvas.getContext('2d');
+let sparks = [];
+
+function initSparks() {
+  spCanvas.width = window.innerWidth;
+  spCanvas.height = window.innerHeight;
+  sparks = Array.from({ length: 55 }, () => ({
+    x: Math.random() * spCanvas.width,
+    y: Math.random() * spCanvas.height,
+    r: Math.random() * 1.8 + 0.4,
+    vx: (Math.random() - 0.5) * 0.28,
+    vy: -Math.random() * 0.45 - 0.12,
+    gold: Math.random() > 0.45,
+    a: Math.random() * 0.65 + 0.15
+  }));
+}
+function animateSparks() {
+  spCtx.clearRect(0, 0, spCanvas.width, spCanvas.height);
+  for (const s of sparks) {
+    s.x += s.vx; s.y += s.vy;
+    if (s.y < 0) s.y = spCanvas.height;
+    if (s.x < 0) s.x = spCanvas.width;
+    if (s.x > spCanvas.width) s.x = 0;
+    spCtx.beginPath();
+    spCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    spCtx.fillStyle = s.gold
+      ? `rgba(255, 225, 130, ${s.a})`
+      : `rgba(185, 255, 120, ${s.a})`;
+    spCtx.fill();
+  }
+  requestAnimationFrame(animateSparks);
+}
+window.addEventListener('resize', initSparks);
+initSparks();
+animateSparks();
+
+/* =========================================================================
+   4. WEB AUDIO ENGINE: "TIE-TIK" MECHANICAL CLOCK + DOOMSDAY SCORE
+   ========================================================================= */
+let audioCtx = null;
+let isAudioReady = false;
+let audioMode = 'cinema';
+let droneMaster = null;
+let bassOsc = null, fifthOsc = null, thirdOsc = null;
+let tieState = false;
+let chordStep = 0;
+let tickMultiplier = 1;
+
+const villainChords = [
+  { b: 36.71, f: 110.00, t: 130.81 }, // Dm
+  { b: 29.14, f: 87.31,  t: 116.54 }, // Bb
+  { b: 49.00, f: 73.42,  t: 116.54 }, // Gm
+  { b: 27.50, f: 82.41,  t: 103.83 }  // A7(b9)
+];
+
+function unlockAudioEngine() {
+  if (!audioCtx) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AC();
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  isAudioReady = true;
+  document.getElementById('audioUnlockPill').style.display = 'none';
+  if (!droneMaster) initDoomOrchestra();
+  playTieTik(true);
+}
+
+function initDoomOrchestra() {
+  droneMaster = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.value = 205;
+
+  const lfo = audioCtx.createOscillator();
+  const lfoG = audioCtx.createGain();
+  lfo.frequency.value = 0.15;
+  lfoG.gain.value = 95;
+  lfo.connect(lfoG);
+  lfoG.connect(filter.frequency);
+  lfo.start();
+
+  bassOsc = audioCtx.createOscillator();
+  fifthOsc = audioCtx.createOscillator();
+  thirdOsc = audioCtx.createOscillator();
+
+  bassOsc.type = 'sawtooth';
+  fifthOsc.type = 'sawtooth';
+  thirdOsc.type = 'triangle';
+
+  bassOsc.connect(filter);
+  fifthOsc.connect(filter);
+  thirdOsc.connect(filter);
+  filter.connect(droneMaster);
+  droneMaster.connect(audioCtx.destination);
+
+  bassOsc.start(); fifthOsc.start(); thirdOsc.start();
+  stepChord();
+  setInterval(stepChord, 6000);
+  updateOrchestraGain();
+}
+
+function stepChord() {
+  if (!audioCtx || !bassOsc) return;
+  const now = audioCtx.currentTime;
+  if (audioMode === 'study') {
+    bassOsc.frequency.setTargetAtTime(40, now, 0.5);
+    fifthOsc.frequency.setTargetAtTime(80, now, 0.5);
+    thirdOsc.frequency.setTargetAtTime(120, now, 0.5);
+    return;
+  }
+  const c = villainChords[chordStep % villainChords.length];
+  chordStep++;
+  bassOsc.frequency.setTargetAtTime(c.b, now, 0.8);
+  fifthOsc.frequency.setTargetAtTime(c.f, now, 0.8);
+  thirdOsc.frequency.setTargetAtTime(c.t, now, 0.8);
+}
+
+function updateOrchestraGain() {
+  if (!droneMaster || !audioCtx) return;
+  const now = audioCtx.currentTime;
+  if (audioMode === 'mute' || audioMode === 'tickonly') {
+    droneMaster.gain.setTargetAtTime(0.0001, now, 0.25);
+  } else if (audioMode === 'study') {
+    stepChord();
+    droneMaster.gain.setTargetAtTime(0.045, now, 0.35);
+  } else {
+    stepChord();
+    droneMaster.gain.setTargetAtTime(0.115, now, 0.35);
+  }
+}
+
+function playTieTik(isMainSecond) {
+  if (!isAudioReady || !audioCtx || audioMode === 'mute') return;
+  const now = audioCtx.currentTime;
+  tieState = !tieState;
+
+  // 1. Crisp Mechanical Escapement ("Tie" vs "Tik")
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  const bp = audioCtx.createBiquadFilter();
+
+  bp.type = 'bandpass';
+  bp.frequency.value = tieState ? 2700 : 1850;
+  bp.Q.value = 5.8;
+
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(tieState ? 1350 : 940, now);
+  osc.frequency.exponentialRampToValueAtTime(145, now + 0.048);
+
+  const vol = audioMode === 'study' ? 0.08 : 0.34;
+  gain.gain.setValueAtTime(vol, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.058);
+
+  osc.connect(bp); bp.connect(gain); gain.connect(audioCtx.destination);
+  osc.start(now); osc.stop(now + 0.062);
+
+  // 2. Cathedral Reverb Echo
+  const echo = audioCtx.createOscillator();
+  const echoG = audioCtx.createGain();
+  echo.type = 'sine';
+  echo.frequency.setValueAtTime(tieState ? 680 : 470, now + 0.085);
+  echoG.gain.setValueAtTime(vol * 0.22, now + 0.085);
+  echoG.gain.exponentialRampToValueAtTime(0.001, now + 0.19);
+  echo.connect(echoG); echoG.connect(audioCtx.destination);
+  echo.start(now + 0.085); echo.stop(now + 0.2);
+
+  // 3. Deep Sub-Bass Thud on Full Second
+  if (isMainSecond && audioMode !== 'study') {
+    const sub = audioCtx.createOscillator();
+    const subG = audioCtx.createGain();
+    sub.type = 'sine';
+    sub.frequency.setValueAtTime(tieState ? 74 : 58, now);
+    sub.frequency.exponentialRampToValueAtTime(22, now + 0.25);
+    subG.gain.setValueAtTime(0.27, now);
+    subG.gain.exponentialRampToValueAtTime(0.001, now + 0.27);
+    sub.connect(subG); subG.connect(audioCtx.destination);
+    sub.start(now); sub.stop(now + 0.28);
+  }
+}
+
+function onAudioModeChange() {
+  audioMode = document.getElementById('audioSel').value;
+  if (!isAudioReady && audioMode !== 'mute') unlockAudioEngine();
+  updateOrchestraGain();
+}
+
+function loadCustomTrack(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const player = document.getElementById('customMp3');
+  player.src = URL.createObjectURL(file);
+  player.volume = 0.6;
+  player.play();
+  if (!isAudioReady) unlockAudioEngine();
+}
+
+/* =========================================================================
+   5. LIVE COUNTDOWN ENGINE (MONTH : DAYS : HOURS : MINUTES : SECONDS)
+   ========================================================================= */
+let lastSecVal = -1;
+function pad2(n) { return String(Math.max(0, n)).padStart(2, '0'); }
+
+function updateClockLoop() {
+  const parts = document.getElementById('milestoneSel').value.split('|');
+  const target = new Date(parts[0]);
+  const now = new Date();
+
+  if (now >= target) {
+    ['numMonth','numDays','numHours','numMinutes','numSeconds'].forEach(id => document.getElementById(id).textContent = '00');
+    return;
+  }
+
+  let months = (target.getFullYear() - now.getFullYear()) * 12 + (target.getMonth() - now.getMonth());
+  let anchor = new Date(now.getFullYear(), now.getMonth() + months, now.getDate(),
+                        now.getHours(), now.getMinutes(), now.getSeconds());
+  if (anchor > target) {
+    months--;
+    anchor = new Date(now.getFullYear(), now.getMonth() + months, now.getDate(),
+                      now.getHours(), now.getMinutes(), now.getSeconds());
+  }
+
+  let rem = target - anchor;
+  const days = Math.floor(rem / 86400000); rem -= days * 86400000;
+  const hours = Math.floor(rem / 3600000); rem -= hours * 3600000;
+  const minutes = Math.floor(rem / 60000); rem -= minutes * 60000;
+  const seconds = Math.floor(rem / 1000);
+
+  document.getElementById('numMonth').textContent = pad2(months);
+  document.getElementById('numDays').textContent = pad2(days);
+  document.getElementById('numHours').textContent = pad2(hours);
+  document.getElementById('numMinutes').textContent = pad2(minutes);
+  const secEl = document.getElementById('numSeconds');
+  secEl.textContent = pad2(seconds);
+
+  if (seconds !== lastSecVal) {
+    lastSecVal = seconds;
+    secEl.classList.add('tick-pop');
+    const flash = document.getElementById('tickFlashOverlay');
+    flash.style.opacity = '1';
+    setTimeout(() => {
+      secEl.classList.remove('tick-pop');
+      flash.style.opacity = '0';
+    }, 115);
+
+    playTieTik(true);
+    if (audioMode === 'urgent' || tickMultiplier === 2) {
+      setTimeout(() => playTieTik(false), 500);
+    }
+  }
+}
+setInterval(updateClockLoop, 100);
+updateClockLoop();
+
+function onMilestoneChange() {
+  const parts = document.getElementById('milestoneSel').value.split('|');
+  document.getElementById('headerTitle').textContent = parts[1];
+  const bgIdx = parseInt(parts[2], 10);
+  tickMultiplier = parseInt(parts[3], 10);
+  activateWallpaper(bgIdx, false);
+  updateClockLoop();
+}
+
+function promptHeading() {
+  const el = document.getElementById('headerTitle');
+  const next = prompt('Enter custom heading:', el.textContent);
+  if (next && next.trim()) el.textContent = next.trim().toUpperCase();
+}
+function toggleFullscreen() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+}
+
+/* =========================================================================
+   6. GTU SEM 7 AUDITED PDF CHECKLIST
+   ========================================================================= */
+const sprintItems = [
+  { id: 'u1', title: '16–19 Nov: Compiler Design PDF (All 38 Qs)', text: 'Sec 1 Pass First (Q1–Q25) + Sec 2 Score More (Q26–Q38, incl. Summer 2026 CLR Table)' },
+  { id: 'u2', title: '20–21 Nov: Mobile App Dev PDF (24 Qs)', text: 'Sec 1 Pass First (Q1–Q24: Lifecycles, Intents, SQLite, Permissions, Retrofit, Firebase)' },
+  { id: 'u3', title: '22–23 Nov: Distributed System PDF (24 Qs)', text: 'Sec 1 Pass First (Q1–Q24: RPC/RMI, Lamport/Vector Clocks, Election, 2PC, Kerberos)' },
+  { id: 'u4', title: '24–25 Nov: Artificial Intelligence PDF (32 Qs)', text: 'Sec 1 Pass First (Q1–Q32: Water Jug, A*, SEND+MORE=MONEY, Resolution, Bayes, Prolog)' },
+  { id: 'u5', title: '26 Nov: Cloud Computing PDF (22 Qs)', text: 'Sec 1 Pass First (Q1–Q22: NIST, IaaS/PaaS/SaaS, Hypervisors, Live Migration, SLA, IAM)' },
+  { id: 'u6', title: '27–30 Nov: Machine Learning PDF (All 36 Qs)', text: 'Sec 1 (Q1–Q24) + Sec 2 (Q25–Q36) -> Ready for 01 Dec Morning Exam!' }
+];
+const tGrid = document.getElementById('trackerGrid');
+sprintItems.forEach(item => {
+  const c = localStorage.getItem(item.id) === 'true' ? 'checked' : '';
+  const div = document.createElement('div');
+  div.className = 't-card';
+  div.innerHTML = `<strong>${item.title}</strong>
+    <label><input type="checkbox" ${c} onchange="localStorage.setItem('${item.id}', this.checked)">
+    <span>${item.text}</span></label>`;
+  tGrid.appendChild(div);
+});
+</script>
+</body>
+</html>
