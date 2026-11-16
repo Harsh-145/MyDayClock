@@ -1,0 +1,738 @@
+/* ==========================================================================
+   MyDayClock — Professional Stylesheet
+   SpaceX Mission Control Inspired | Harsh Yadav
+   ========================================================================== */
+
+/* ---------- 1. CUSTOM PROPERTIES ---------- */
+:root {
+  --accent: #b8ff6b;
+  --accent-glow: rgba(184, 255, 107, 0.65);
+  --accent-dim: rgba(165, 255, 100, 0.3);
+  --bg-void: #000000;
+  --bg-panel: rgba(4, 14, 4, 0.88);
+  --bg-panel-solid: rgba(6, 22, 4, 0.96);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(240, 248, 238, 0.9);
+  --text-accent: rgba(195, 255, 135, 0.88);
+  --text-muted: rgba(210, 230, 205, 0.72);
+  --font-main: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius-pill: 30px;
+  --radius-card: 12px;
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.2s var(--ease-smooth);
+  --transition-smooth: 0.35s var(--ease-smooth);
+}
+
+/* ---------- 2. RESET & BASE ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Prevent iOS bounce scroll */
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  width: 100vw;
+  width: 100dvw;
+  height: 100vh;
+  height: 100dvh;           /* dynamic viewport height — fixes iOS Safari address bar */
+  overflow: hidden;
+  background: var(--bg-void);
+  font-family: var(--font-main);
+  color: var(--text-primary);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  touch-action: manipulation; /* prevent double-tap zoom on mobile */
+  /* Safe area insets for devices with notch */
+  padding:
+    env(safe-area-inset-top, 0px)
+    env(safe-area-inset-right, 0px)
+    env(safe-area-inset-bottom, 0px)
+    env(safe-area-inset-left, 0px);
+}
+
+/* ---------- 3. LOADING SCREEN ---------- */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-void);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(184, 255, 107, 0.15);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.loading-text {
+  margin-top: 16px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- 4. CINEMA FRAME & BACKGROUNDS ---------- */
+.cinema-frame {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #020602;
+}
+
+.bg-img {
+  position: fixed;
+  top: -6vh;
+  left: -6vw;
+  width: 112vw;
+  height: 112vh;
+  object-fit: cover;
+  object-position: center 18%;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+  z-index: 2;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.bg-img.active {
+  opacity: 1;
+  animation: slowPan 18s infinite alternate ease-in-out;
+}
+@keyframes slowPan {
+  0%   { transform: scale(1.0); }
+  100% { transform: scale(1.05); }
+}
+
+/* Reduced motion: disable Ken Burns */
+@media (prefers-reduced-motion: reduce) {
+  .bg-img.active {
+    animation: none;
+  }
+}
+
+/* ---------- 5. PARTICLE CANVAS ---------- */
+#ashCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ---------- 6. SHADOW GRADIENT OVERLAY ---------- */
+.shadow-gradient {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    transparent 42%,
+    rgba(1, 6, 1, 0.55) 60%,
+    rgba(0, 0, 0, 0.85) 78%,
+    rgba(0, 0, 0, 0.96) 100%);
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* ---------- 7. SOUND UNLOCK BANNER ---------- */
+.sound-unlock {
+  position: fixed;
+  top: 12vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  background: linear-gradient(135deg, rgba(22, 68, 14, 0.96), rgba(6, 22, 4, 0.99));
+  border: 1.5px solid var(--accent);
+  color: var(--text-primary);
+  padding: 14px 30px;
+  border-radius: 40px;
+  font-family: var(--font-main);
+  font-size: clamp(0.62rem, 0.85vw, 0.78rem);
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 32px var(--accent-glow);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  animation: unlockPulse 2s ease-in-out infinite;
+}
+.sound-unlock:hover {
+  transform: translateX(-50%) scale(1.04);
+  box-shadow: 0 0 48px var(--accent-glow);
+}
+.sound-unlock:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.sound-unlock[hidden] {
+  display: none;
+}
+@keyframes unlockPulse {
+  0%, 100% { box-shadow: 0 0 32px var(--accent-glow); }
+  50%      { box-shadow: 0 0 50px var(--accent-glow), 0 0 80px rgba(184,255,107,0.25); }
+}
+
+/* ---------- 8. TOP DOCK (CONTROLS) ---------- */
+.top-dock {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 22;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: 96%;
+  max-width: 1180px;
+  background: var(--bg-panel);
+  border: 1px solid var(--accent-dim);
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.ist-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  color: var(--accent);
+  padding-right: 8px;
+  border-right: 1px solid var(--accent-dim);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.btn-ctrl,
+.select-ctrl {
+  background: rgba(14, 38, 12, 0.88);
+  border: 1px solid rgba(158, 245, 98, 0.42);
+  color: #eaffdf;
+  padding: 5px 10px;
+  font-family: var(--font-main);
+  font-size: 0.59rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+.btn-ctrl:hover,
+.select-ctrl:hover,
+.btn-ctrl.active {
+  background: rgba(42, 112, 24, 0.95);
+  border-color: var(--accent);
+}
+.btn-ctrl:focus-visible,
+.select-ctrl:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- 9. COUNTDOWN OVERLAY ---------- */
+.countdown-overlay {
+  position: fixed;
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+  width: 96%;
+  max-width: 1160px;
+}
+
+.mission-kicker {
+  font-size: clamp(0.5rem, 0.78vw, 0.72rem);
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  color: var(--text-accent);
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.98);
+}
+
+.mission-heading {
+  font-size: clamp(1.1rem, 2.2vw, 1.95rem);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  padding-left: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  text-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.98),
+    0 0 24px rgba(175, 255, 125, 0.3);
+  margin-bottom: clamp(0.3rem, 0.8vh, 0.7rem);
+}
+
+.t-minus {
+  font-size: clamp(0.7rem, 1.1vw, 1rem);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: clamp(0.15rem, 0.4vh, 0.3rem);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.digits-row {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: clamp(0.24rem, 1.3vw, 1.12rem);
+}
+
+.unit-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: clamp(50px, 10vw, 128px);
+}
+
+.digit-pair {
+  font-size: clamp(1.7rem, 5vw, 4.5rem);
+  font-weight: 600;
+  letter-spacing: 0.17em;
+  padding-left: 0.17em;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.05;
+  text-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.98),
+    0 0 28px rgba(185, 255, 140, 0.25);
+  transition: transform 0.08s ease, text-shadow 0.08s ease;
+}
+.digit-pair.tick-pulse {
+  transform: scale(1.04);
+  text-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.98),
+    0 0 40px rgba(205, 255, 155, 0.82);
+}
+
+.colon-sep {
+  font-size: clamp(1.3rem, 3.8vw, 3.4rem);
+  font-weight: 600;
+  color: var(--text-primary);
+  transform: translateY(-0.12em);
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.98);
+  opacity: 0.7;
+}
+
+.sub-label {
+  margin-top: clamp(0.3rem, 0.8vh, 0.65rem);
+  font-size: clamp(0.4rem, 0.7vw, 0.66rem);
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  padding-left: 0.24em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.98);
+}
+
+/* ---------- 10. MOTIVATIONAL QUOTE ---------- */
+.quote-bar {
+  margin-top: clamp(0.8rem, 1.8vh, 1.4rem);
+  font-size: clamp(0.52rem, 0.72vw, 0.68rem);
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 0.08em;
+  color: rgba(200, 255, 170, 0.6);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: opacity 0.5s ease;
+}
+
+/* ---------- 11. SPACEX MISSION ARC TIMELINE ---------- */
+.mission-arc {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 22;
+  width: 96vw;
+  max-width: 1440px;
+  height: clamp(100px, 18vh, 180px);
+  pointer-events: none;
+}
+
+.mission-arc svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Arc milestone nodes */
+.arc-node {
+  cursor: pointer;
+  pointer-events: all;
+  transition: transform var(--transition-fast);
+}
+.arc-node:hover .arc-dot {
+  r: 7;
+  filter: url(#arcGlow);
+}
+.arc-node-label {
+  font-family: var(--font-main);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  fill: var(--text-muted);
+  text-anchor: middle;
+  text-transform: uppercase;
+  transition: fill var(--transition-fast);
+  pointer-events: none;
+}
+.arc-node-label.is-active {
+  fill: var(--accent);
+  font-size: 12.5px;
+}
+.arc-node-label.is-done {
+  fill: rgba(130, 200, 90, 0.6);
+}
+.arc-time-label {
+  font-family: var(--font-main);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  fill: rgba(200, 240, 180, 0.5);
+  text-anchor: middle;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+.arc-time-label.is-active {
+  fill: rgba(220, 255, 200, 0.85);
+  font-size: 10.5px;
+}
+
+/* Active node pulse */
+@keyframes arcPulse {
+  0%, 100% { r: 5; opacity: 1; }
+  50%      { r: 7; opacity: 0.8; }
+}
+.arc-dot-active {
+  animation: arcPulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arc-dot-active {
+    animation: none;
+  }
+}
+
+/* ---------- 12. TODAY MODAL ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 38;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-smooth), visibility var(--transition-smooth);
+}
+.modal-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  z-index: 40;
+  display: none;
+  width: 92%;
+  max-width: 560px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--bg-panel-solid);
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius-card);
+  padding: 24px 28px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 40px rgba(184, 255, 107, 0.1);
+  transition: transform var(--transition-smooth), opacity var(--transition-smooth);
+  opacity: 0;
+}
+.modal.visible {
+  display: block;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+.modal h3 {
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.modal p {
+  font-size: 0.78rem;
+  line-height: 1.7;
+  color: #e8ffe0;
+  margin-bottom: 16px;
+}
+
+/* ---------- 13. KEYBOARD HINT ---------- */
+.kbd-hint {
+  position: fixed;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-size: clamp(0.58rem, 0.75vw, 0.72rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: rgba(220, 255, 200, 0.55);
+  text-transform: uppercase;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 6px 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(165, 255, 100, 0.12);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  white-space: nowrap;
+}
+
+/* ---------- 14. AUTO-HIDE SYSTEM ---------- */
+.auto-hide {
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+body.idle .auto-hide {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ---------- 15. RESPONSIVE — ALL DEVICES ---------- */
+
+/* ── Tablet (≤ 1100px) ── */
+@media (max-width: 1100px) {
+  .countdown-overlay { top: 50%; }
+  .mission-arc { height: clamp(90px, 16vh, 150px); }
+}
+
+/* ── Small Tablet / Large Phone Landscape (≤ 900px) ── */
+@media (max-width: 900px) {
+  .countdown-overlay { top: 48%; }
+  .top-dock {
+    padding: 5px 10px;
+    gap: 4px;
+    max-width: 98%;
+  }
+  .mission-arc { height: clamp(85px, 15vh, 140px); }
+  .arc-node-label { font-size: 9px; }
+  .arc-time-label { font-size: 8px; }
+  .kbd-hint { font-size: 0.52rem; padding: 4px 12px; }
+}
+
+/* ── Phone Landscape / Small Tablet (≤ 768px) ── */
+@media (max-width: 768px) {
+  .countdown-overlay { top: 46%; }
+  .top-dock {
+    padding: 5px 8px;
+    gap: 3px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+  .btn-ctrl, .select-ctrl {
+    font-size: 0.52rem;
+    padding: 4px 8px;
+    flex-shrink: 0;
+  }
+  .mission-arc { height: clamp(80px, 14vh, 130px); }
+  .arc-node-label { font-size: 8px; letter-spacing: 0.06em; }
+  .arc-time-label { font-size: 7px; }
+  .modal { width: 95%; padding: 18px 16px; }
+  .modal h3 { font-size: 0.75rem; }
+  .modal p { font-size: 0.7rem; }
+  .sound-unlock { padding: 10px 20px; font-size: 0.6rem; }
+  .kbd-hint { display: none; } /* hide on touch devices */
+}
+
+/* ── Phone Portrait (≤ 480px) ── */
+@media (max-width: 480px) {
+  .countdown-overlay { top: 42%; }
+  .digit-pair {
+    font-size: clamp(1.4rem, 10vw, 2.8rem);
+  }
+  .colon-sep {
+    font-size: clamp(1rem, 7vw, 2rem);
+  }
+  .sub-label {
+    font-size: clamp(0.35rem, 2.2vw, 0.5rem);
+  }
+  .mission-kicker {
+    font-size: clamp(0.4rem, 2.5vw, 0.6rem);
+  }
+  .mission-heading {
+    font-size: clamp(0.8rem, 4.5vw, 1.3rem);
+    letter-spacing: 0.12em;
+    padding-left: 0.12em;
+  }
+  .t-minus {
+    font-size: clamp(0.55rem, 2.8vw, 0.8rem);
+  }
+  .quote-bar {
+    font-size: clamp(0.42rem, 2.5vw, 0.55rem);
+    padding: 0 8px;
+  }
+  .top-dock {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 0;
+    top: 0;
+    padding: 4px 6px;
+    gap: 3px;
+  }
+  .ist-badge { font-size: 0.48rem; padding-right: 5px; }
+  .mission-arc {
+    width: 100vw;
+    height: clamp(70px, 13vh, 110px);
+  }
+  .arc-node-label { font-size: 6.5px; letter-spacing: 0.04em; }
+  .arc-time-label { font-size: 5.5px; }
+  .sound-unlock {
+    top: 15vh;
+    padding: 10px 18px;
+    font-size: 0.55rem;
+    max-width: 90vw;
+    text-align: center;
+  }
+}
+
+/* ── Very Small Phone (≤ 360px, e.g. iPhone SE, Galaxy A01) ── */
+@media (max-width: 360px) {
+  .countdown-overlay { top: 38%; }
+  .digit-pair { font-size: clamp(1.2rem, 9vw, 2.2rem); }
+  .colon-sep { font-size: clamp(0.9rem, 6vw, 1.6rem); }
+  .digits-row { gap: 0.15rem; }
+  .unit-block { min-width: 42px; }
+  .mission-heading {
+    font-size: clamp(0.7rem, 4vw, 1.1rem);
+    letter-spacing: 0.08em;
+  }
+}
+
+/* ── Landscape on short screens (phone/tablet held sideways) ── */
+@media (max-height: 500px) and (orientation: landscape) {
+  .countdown-overlay { top: 50%; }
+  .digit-pair { font-size: clamp(1.3rem, 5vh, 2.5rem); }
+  .colon-sep { font-size: clamp(1rem, 4vh, 2rem); }
+  .sub-label { font-size: clamp(0.35rem, 1.5vh, 0.45rem); margin-top: 2px; }
+  .mission-kicker { font-size: clamp(0.4rem, 1.5vh, 0.55rem); }
+  .mission-heading {
+    font-size: clamp(0.7rem, 3vh, 1.2rem);
+    margin-bottom: 0.15rem;
+  }
+  .t-minus { font-size: clamp(0.45rem, 1.8vh, 0.7rem); }
+  .quote-bar { display: none; }
+  .top-dock { padding: 3px 8px; }
+  .btn-ctrl, .select-ctrl { padding: 3px 7px; font-size: 0.48rem; }
+  .ist-badge { font-size: 0.48rem; }
+  .mission-arc { height: clamp(55px, 12vh, 90px); }
+  .arc-node-label { font-size: 7px; }
+  .arc-time-label { font-size: 6px; }
+  .sound-unlock { top: 5vh; padding: 8px 16px; font-size: 0.5rem; }
+  .shadow-gradient {
+    background: linear-gradient(to bottom,
+      transparent 0%, transparent 30%,
+      rgba(0, 0, 0, 0.7) 65%,
+      rgba(0, 0, 0, 0.95) 100%);
+  }
+}
+
+/* ── Ultra-wide & TV/OBS (≥ 1920px) ── */
+@media (min-width: 1920px) {
+  .countdown-overlay { top: 58%; }
+  .digit-pair { font-size: clamp(3.5rem, 4.5vw, 6rem); }
+  .colon-sep { font-size: clamp(2.8rem, 3.5vw, 5rem); }
+  .mission-heading { font-size: clamp(1.6rem, 2vw, 2.5rem); }
+  .mission-kicker { font-size: clamp(0.65rem, 0.8vw, 0.9rem); }
+  .sub-label { font-size: clamp(0.6rem, 0.7vw, 0.8rem); }
+  .t-minus { font-size: clamp(0.9rem, 1vw, 1.2rem); }
+  .quote-bar { font-size: clamp(0.6rem, 0.7vw, 0.8rem); max-width: 800px; }
+  .mission-arc { height: clamp(140px, 18vh, 220px); }
+  .arc-node-label { font-size: 14px; }
+  .arc-time-label { font-size: 12px; }
+  .top-dock { max-width: 1400px; }
+  .kbd-hint { font-size: 0.68rem; }
+}
+
+/* ── 4K+ displays ── */
+@media (min-width: 2560px) {
+  .digit-pair { font-size: clamp(5rem, 4vw, 8rem); }
+  .mission-heading { font-size: clamp(2rem, 1.8vw, 3rem); }
+  .mission-arc { height: clamp(180px, 16vh, 280px); }
+  .arc-node-label { font-size: 17px; }
+  .arc-time-label { font-size: 14px; }
+}
+
+/* ---------- 16. ACCESSIBILITY ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .loading-spinner {
+    animation: none;
+    border-color: var(--accent);
+  }
+}
+
+/* Focus visible for keyboard navigation */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

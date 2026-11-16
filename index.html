@@ -1,856 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>MYDAYS ARE COMING // HARSH YADAV</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
-  html, body {
-    width: 100vw; height: 100vh;
-    overflow: hidden;
-    background: #000000;
-    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
-    color: #ffffff;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="MyDayClock — Cinematic exam countdown mission clock by Harsh Yadav. Track GTU, GATE, BARC, DRDO, ISRO exams with a SpaceX-inspired timeline.">
+  <meta name="theme-color" content="#0a1a06">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  /* 1. FULLSCREEN STAGE (ZERO BLACK BARS, ZERO CLUTTER) */
-  .cinema-frame {
-    position: fixed; inset: 0;
-    width: 100vw; height: 100vh;
-    overflow: hidden;
-    background: #020602;
-  }
+  <!-- Open Graph -->
+  <meta property="og:title" content="MyDayClock — Harsh Yadav">
+  <meta property="og:description" content="Cinematic exam countdown with SpaceX-inspired mission arc timeline.">
+  <meta property="og:image" content="img/1.jpg">
+  <meta property="og:type" content="website">
 
-  /* 4 Overscaled Fullscreen Wallpapers Directly Linked to img/1.jpg .. img/4.jpg */
-  .bg-img {
-    position: fixed;
-    top: -6vh; left: -6vw;
-    width: 112vw; height: 112vh;
-    object-fit: cover;
-    object-position: center 18%;
-    opacity: 0;
-    transition: opacity 1.2s ease-in-out;
-    z-index: 2;
-    pointer-events: none;
-    will-change: transform, opacity;
-  }
-  .bg-img.active {
-    opacity: 1;
-    animation: slowPan 18s infinite alternate ease-in-out;
-  }
-  @keyframes slowPan {
-    0% { transform: scale(1.0); }
-    100% { transform: scale(1.05); }
-  }
+  <title>MYDAYS ARE COMING // HARSH YADAV</title>
 
-  #ashCanvas {
-    position: fixed; inset: 0;
-    width: 100vw; height: 100vh;
-    z-index: 3;
-    pointer-events: none;
-  }
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="img/1.jpg">
 
-  .shadow-gradient {
-    position: fixed; inset: 0;
-    background: linear-gradient(to bottom,
-      transparent 0%,
-      transparent 52%,
-      rgba(1, 6, 1, 0.72) 68%,
-      rgba(0, 0, 0, 0.90) 86%,
-      rgba(0, 0, 0, 0.96) 100%);
-    z-index: 4;
-    pointer-events: none;
-  }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
-  /* 2. SOUND UNLOCK BANNER (Auto-hides immediately if browser allows autoplay or on first click) */
-  #soundUnlockBanner {
-    position: fixed;
-    top: 12vh; left: 50%;
-    transform: translateX(-50%);
-    z-index: 30;
-    background: linear-gradient(135deg, rgba(22, 68, 14, 0.96), rgba(6, 22, 4, 0.99));
-    border: 2px solid #b8ff6b;
-    color: #ffffff;
-    padding: 12px 26px;
-    border-radius: 40px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: clamp(0.66rem, 0.92vw, 0.8rem);
-    font-weight: 800;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    cursor: pointer;
-    box-shadow: 0 0 32px rgba(155, 255, 90, 0.65);
-  }
-
-  /* 3. CENTER COUNTDOWN OVERLAY */
-  .doomsday-clock-overlay {
-    position: fixed;
-    left: 50%; top: 69%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    text-align: center;
-    width: 96%;
-    max-width: 1160px;
-  }
-  .path-kicker {
-    font-size: clamp(0.52rem, 0.82vw, 0.76rem);
-    font-weight: 700;
-    letter-spacing: 0.26em;
-    color: rgba(195, 255, 135, 0.88);
-    text-transform: uppercase;
-    margin-bottom: 0.35rem;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.98);
-  }
-  .doomsday-heading {
-    font-size: clamp(1.1rem, 2.2vw, 1.95rem);
-    font-weight: 800;
-    letter-spacing: 0.22em;
-    padding-left: 0.22em;
-    text-transform: uppercase;
-    color: #ffffff;
-    text-shadow: 0 4px 18px rgba(0,0,0,0.98), 0 0 24px rgba(175, 255, 125, 0.3);
-    margin-bottom: clamp(0.45rem, 1.15vh, 0.95rem);
-  }
-  .digits-row {
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-    gap: clamp(0.24rem, 1.3vw, 1.12rem);
-  }
-  .unit-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: clamp(52px, 10.4vw, 132px);
-  }
-  .digit-pair {
-    font-size: clamp(1.75rem, 5.2vw, 4.7rem);
-    font-weight: 600;
-    letter-spacing: 0.17em;
-    padding-left: 0.17em;
-    color: #ffffff;
-    font-variant-numeric: tabular-nums;
-    line-height: 1.05;
-    text-shadow: 0 4px 24px rgba(0,0,0,0.98), 0 0 28px rgba(185, 255, 140, 0.25);
-    transition: transform 0.08s ease, text-shadow 0.08s ease;
-  }
-  .digit-pair.tick-pulse {
-    transform: scale(1.038);
-    text-shadow: 0 4px 24px rgba(0,0,0,0.98), 0 0 40px rgba(205, 255, 155, 0.82);
-  }
-  .colon-sep {
-    font-size: clamp(1.4rem, 4.1vw, 3.6rem);
-    font-weight: 600;
-    color: #ffffff;
-    transform: translateY(-0.12em);
-    text-shadow: 0 4px 18px rgba(0,0,0,0.98);
-  }
-  .sub-label {
-    margin-top: clamp(0.35rem, 0.95vh, 0.75rem);
-    font-size: clamp(0.42rem, 0.76vw, 0.72rem);
-    font-weight: 600;
-    letter-spacing: 0.24em;
-    padding-left: 0.24em;
-    color: rgba(240, 248, 238, 0.9);
-    text-transform: uppercase;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.98);
-  }
-
-  /* 4. AUTO-HIDING UI (COMPLETELY INVISIBLE AFTER 2.5s OF NO MOUSE MOVE) */
-  .auto-hide-ui {
-    transition: opacity 0.45s ease, transform 0.45s ease;
-  }
-  body.idle-cinema .auto-hide-ui {
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-
-  .top-dock {
-    position: fixed;
-    top: 14px; left: 50%;
-    transform: translateX(-50%);
-    z-index: 22;
-    display: flex; align-items: center; justify-content: center;
-    flex-wrap: wrap; gap: 6px;
-    width: 96%; max-width: 1180px;
-    background: rgba(4, 14, 4, 0.88);
-    border: 1px solid rgba(165, 255, 100, 0.4);
-    padding: 7px 14px;
-    border-radius: 30px;
-    backdrop-filter: blur(12px);
-  }
-  .ist-badge {
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.11em;
-    color: #b8ff6b;
-    padding-right: 8px;
-    border-right: 1px solid rgba(165, 255, 100, 0.3);
-    font-variant-numeric: tabular-nums;
-  }
-  .btn-doom, .select-doom {
-    background: rgba(14, 38, 12, 0.88);
-    border: 1px solid rgba(158, 245, 98, 0.42);
-    color: #eaffdf;
-    padding: 5px 10px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.59rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .btn-doom:hover, .select-doom:hover, .btn-doom.active-btn {
-    background: rgba(42, 112, 24, 0.95);
-    border-color: #c6ff87;
-  }
-
-  /* Minimal Bottom Timeline (Nov 2026 - Nov 2027 Complete Journey) */
-  .bottom-timeline {
-    position: fixed;
-    bottom: 12px; left: 50%;
-    transform: translateX(-50%);
-    z-index: 22;
-    width: 96vw;
-    max-width: 1440px;
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 6px;
-  }
-  .path-box {
-    background: rgba(4, 12, 4, 0.82);
-    border: 1px solid rgba(145, 235, 85, 0.28);
-    border-radius: 6px;
-    padding: 6px 5px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    cursor: pointer;
-    transition: all 0.25s ease;
-  }
-  .path-box.active-card {
-    background: rgba(24, 68, 16, 0.94);
-    border-color: #b8ff6b;
-    box-shadow: 0 0 14px rgba(165, 255, 95, 0.4);
-    transform: translateY(-2px);
-  }
-  .pb-name {
-    font-size: clamp(0.42rem, 0.54vw, 0.52rem);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: #a8f06a;
-    text-transform: uppercase;
-    margin-bottom: 2px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .pb-time {
-    font-size: clamp(0.54rem, 0.8vw, 0.78rem);
-    font-weight: 700;
-    color: #ffffff;
-    font-variant-numeric: tabular-nums;
-  }
-  .pb-date {
-    font-size: clamp(0.38rem, 0.46vw, 0.45rem);
-    letter-spacing: 0.06em;
-    color: rgba(210, 230, 205, 0.72);
-    margin-top: 2px;
-  }
-
-  #todayModal {
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 40;
-    display: none;
-    width: 92%; max-width: 560px;
-    background: rgba(4, 14, 4, 0.96);
-    border: 1.5px solid #b8ff6b;
-    border-radius: 12px;
-    padding: 22px 24px;
-    backdrop-filter: blur(16px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.95);
-  }
-  #todayModal h3 {
-    font-size: 0.85rem; letter-spacing: 0.16em; color: #b8ff6b;
-    text-transform: uppercase; margin-bottom: 10px;
-  }
-  #todayModal p {
-    font-size: 0.78rem; line-height: 1.65; color: #e8ffe0; margin-bottom: 14px;
-  }
-
-  @media (max-width: 1100px) {
-    .bottom-timeline { grid-template-columns: repeat(4, 1fr); }
-    .doomsday-clock-overlay { top: 62%; }
-  }
-  @media (max-width: 600px) {
-    .bottom-timeline { grid-template-columns: repeat(2, 1fr); gap: 4px; }
-    .doomsday-clock-overlay { top: 54%; }
-  }
-</style>
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-<div class="cinema-frame">
-  <!-- 4 Fullscreen Wallpapers Directly Linked to Your img/1.jpg .. img/4.jpg -->
-  <img class="bg-img active" id="bg0" src="img/1.jpg" alt=""/>
-  <img class="bg-img" id="bg1" src="img/2.jpg" alt=""/>
-  <img class="bg-img" id="bg2" src="img/3.jpg" alt=""/>
-  <img class="bg-img" id="bg3" src="img/4.jpg" alt=""/>
+  <!-- ═══════ LOADING SCREEN ═══════ -->
+  <div class="loading-screen" id="loadingScreen" role="status" aria-label="Loading">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Initializing Mission Clock…</div>
+  </div>
 
-  <canvas id="ashCanvas"></canvas>
-  <div class="shadow-gradient"></div>
+  <!-- ═══════ CINEMA FRAME ═══════ -->
+  <div class="cinema-frame">
 
-  <!-- Sound Unlock Banner (Vanishes as soon as audio starts) -->
-  <button id="soundUnlockBanner" onclick="unlockAndStartAudio()">
-    🔊 CLICK ANYWHERE TO START MUSIC &amp; "TIE-TIK" CLOCK
-  </button>
+    <!-- Fullscreen Wallpapers -->
+    <img class="bg-img active" id="bg0" src="img/1.jpg" alt="Background wallpaper 1">
+    <img class="bg-img"        id="bg1" src="img/2.jpg" alt="Background wallpaper 2" loading="lazy">
+    <img class="bg-img"        id="bg2" src="img/3.jpg" alt="Background wallpaper 3" loading="lazy">
+    <img class="bg-img"        id="bg3" src="img/4.jpg" alt="Background wallpaper 4" loading="lazy">
 
-  <!-- Minimal Top Dock (Auto-hides after 2.5s of no mouse movement!) -->
-  <div class="top-dock auto-hide-ui">
-    <span class="ist-badge" id="networkTimeDisplay">🕒 IST SYNCING...</span>
+    <!-- Particle Canvas -->
+    <canvas id="ashCanvas" aria-hidden="true"></canvas>
 
-    <button class="btn-doom" onclick="cycleTimeMode()" id="examTimeModeBadge">
-      🕥 GTU: 10:30 AM
+    <!-- Gradient Overlay -->
+    <div class="shadow-gradient" aria-hidden="true"></div>
+
+    <!-- ═══════ SOUND UNLOCK BANNER ═══════ -->
+    <button class="sound-unlock" id="soundUnlock"
+            onclick="MDC.unlockAudio()"
+            aria-label="Click to enable music and clock sounds">
+      🔊 TAP TO LAUNCH AUDIO &amp; CLOCK
     </button>
-    <button class="btn-doom" id="btnDir" onclick="toggleDirector()">🎥 Cycle: OFF</button>
-    <button class="btn-doom active-btn" id="btnW0" onclick="forceBg(0)">BG 1</button>
-    <button class="btn-doom" id="btnW1" onclick="forceBg(1)">BG 2</button>
-    <button class="btn-doom" id="btnW2" onclick="forceBg(2)">BG 3</button>
-    <button class="btn-doom" id="btnW3" onclick="forceBg(3)">BG 4</button>
 
-    <!-- MUSIC (music/Music.mp3) 4 VARIANT SELECTOR -->
-    <select id="audioModeSelect" class="select-doom" onchange="updateAudioMode()">
-      <option value="music_orig">🔊 Music — Original (83 BPM + Tie-Tik)</option>
-      <option value="music_slow">🌑 Music — Slowed Dark Edit (67 BPM)</option>
-      <option value="music_fast">⚡ Music — Boss Overdrive (101 BPM + 2x Tick)</option>
-      <option value="music_study">🧠 Music — Soft Study Edit (71 BPM)</option>
-      <option value="tickonly">⏱️ Pure "Tie-Tik" Clock Only</option>
-      <option value="mute">🔇 Mute</option>
-    </select>
+    <!-- ═══════ TOP DOCK (Auto-hides) ═══════ -->
+    <nav class="top-dock auto-hide" role="toolbar" aria-label="Mission controls">
+      <span class="ist-badge" id="networkTime" aria-live="polite">🕒 IST SYNCING…</span>
 
-    <button class="btn-doom" onclick="toggleTodayModal()">📅 Today</button>
-    <button class="btn-doom" onclick="toggleFS()">⛶</button>
-  </div>
+      <button class="btn-ctrl" onclick="MDC.cycleTimeMode()" id="examModeBadge"
+              aria-label="Toggle GTU exam start time">
+        🕥 GTU: 10:30 AM
+      </button>
 
-  <!-- Today's 3-Block Plan Popup -->
-  <div id="todayModal">
-    <h3 id="todayModalTitle">📅 TODAY'S PLAN</h3>
-    <p id="todayModalBody"></p>
-    <button class="btn-doom" onclick="toggleTodayModal()">Close</button>
-  </div>
+      <button class="btn-ctrl" id="btnCycle" onclick="MDC.toggleAutoCycle()"
+              aria-label="Toggle auto-cycle through milestones">
+        🎥 Cycle: OFF
+      </button>
 
-  <!-- Center Countdown Overlay -->
-  <div class="doomsday-clock-overlay">
-    <div class="path-kicker" id="pathKicker">GTU SEM 7 FINALE // 18 DEC 2026 • 01:00 PM IST</div>
-    <div class="doomsday-heading" id="headingText">MYDAYS ARE COMING</div>
-    <div class="digits-row">
-      <div class="unit-block">
-        <div class="digit-pair" id="dMonth">01</div>
-        <div class="sub-label">MONTH</div>
-      </div>
-      <div class="colon-sep">:</div>
-      <div class="unit-block">
-        <div class="digit-pair" id="dDays">01</div>
-        <div class="sub-label">DAYS</div>
-      </div>
-      <div class="colon-sep">:</div>
-      <div class="unit-block">
-        <div class="digit-pair" id="dHours">22</div>
-        <div class="sub-label">HOURS</div>
-      </div>
-      <div class="colon-sep">:</div>
-      <div class="unit-block">
-        <div class="digit-pair" id="dMinutes">43</div>
-        <div class="sub-label">MINUTES</div>
-      </div>
-      <div class="colon-sep">:</div>
-      <div class="unit-block">
-        <div class="digit-pair" id="dSeconds">00</div>
-        <div class="sub-label">SECONDS</div>
-      </div>
+      <button class="btn-ctrl active" id="btnW0" onclick="MDC.forceBg(0)" aria-label="Background 1">BG 1</button>
+      <button class="btn-ctrl"        id="btnW1" onclick="MDC.forceBg(1)" aria-label="Background 2">BG 2</button>
+      <button class="btn-ctrl"        id="btnW2" onclick="MDC.forceBg(2)" aria-label="Background 3">BG 3</button>
+      <button class="btn-ctrl"        id="btnW3" onclick="MDC.forceBg(3)" aria-label="Background 4">BG 4</button>
+
+      <!-- Music Mode Selector -->
+      <select id="audioModeSelect" class="select-ctrl" onchange="MDC.onAudioModeChange()"
+              aria-label="Select music mode">
+        <option value="music_orig">🔊 Original (83 BPM + Tick)</option>
+        <option value="music_slow">🌑 Slowed Dark (67 BPM)</option>
+        <option value="music_fast">⚡ Boss Overdrive (101 BPM)</option>
+        <option value="music_study">🧠 Soft Study (71 BPM)</option>
+        <option value="tickonly">⏱️ Clock Tick Only</option>
+        <option value="mute">🔇 Mute</option>
+      </select>
+
+      <button class="btn-ctrl" onclick="MDC.toggleTodayModal()" aria-label="Show today's study plan">📅 Today</button>
+      <button class="btn-ctrl" onclick="MDC.toggleFullscreen()" aria-label="Toggle fullscreen">⛶</button>
+    </nav>
+
+    <!-- ═══════ TODAY'S PLAN MODAL ═══════ -->
+    <div class="modal-overlay" id="modalOverlay" onclick="MDC.toggleTodayModal()"></div>
+    <div class="modal" id="todayModal" role="dialog" aria-modal="true" aria-labelledby="todayTitle">
+      <h3 id="todayTitle">📅 TODAY'S PLAN</h3>
+      <p id="todayBody"></p>
+      <button class="btn-ctrl" onclick="MDC.toggleTodayModal()">Close (Esc)</button>
     </div>
+
+    <!-- ═══════ COUNTDOWN OVERLAY ═══════ -->
+    <div class="countdown-overlay" role="timer" aria-label="Mission countdown">
+      <div class="mission-kicker" id="pathKicker">GTU SEM 7 FINALE // 18 DEC 2026 • 01:00 PM IST</div>
+      <div class="mission-heading" id="headingText">MYDAYS ARE COMING</div>
+      <div class="t-minus" id="tMinus">T—</div>
+      <div class="digits-row">
+        <div class="unit-block">
+          <div class="digit-pair" id="dMonth" aria-label="Months">01</div>
+          <div class="sub-label">Months</div>
+        </div>
+        <div class="colon-sep" aria-hidden="true">:</div>
+        <div class="unit-block">
+          <div class="digit-pair" id="dDays" aria-label="Days">01</div>
+          <div class="sub-label">Days</div>
+        </div>
+        <div class="colon-sep" aria-hidden="true">:</div>
+        <div class="unit-block">
+          <div class="digit-pair" id="dHours" aria-label="Hours">22</div>
+          <div class="sub-label">Hours</div>
+        </div>
+        <div class="colon-sep" aria-hidden="true">:</div>
+        <div class="unit-block">
+          <div class="digit-pair" id="dMinutes" aria-label="Minutes">43</div>
+          <div class="sub-label">Minutes</div>
+        </div>
+        <div class="colon-sep" aria-hidden="true">:</div>
+        <div class="unit-block">
+          <div class="digit-pair" id="dSeconds" aria-label="Seconds">00</div>
+          <div class="sub-label">Seconds</div>
+        </div>
+      </div>
+      <div class="quote-bar" id="quoteBar" aria-live="polite"></div>
+    </div>
+
+    <!-- ═══════ SPACEX MISSION ARC TIMELINE (Auto-hides) ═══════ -->
+    <div class="mission-arc auto-hide" id="missionArc" role="navigation" aria-label="Mission timeline">
+      <svg id="arcSvg" viewBox="0 0 1400 160" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <filter id="arcGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <!-- Background arc (dim track) -->
+        <path id="arcBg"
+              d="M 60,138 Q 700,12 1340,138"
+              fill="none"
+              stroke="rgba(165,255,100,0.12)"
+              stroke-width="1.5"
+              stroke-linecap="round"/>
+        <!-- Progress arc (fills as milestones complete) -->
+        <path id="arcFill"
+              d="M 60,138 Q 700,12 1340,138"
+              fill="none"
+              stroke="rgba(184,255,107,0.55)"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              style="transition: stroke-dashoffset 1s ease;"/>
+        <!-- Milestone nodes (populated by JS) -->
+        <g id="arcNodes"></g>
+      </svg>
+    </div>
+
+    <!-- Keyboard Hints -->
+    <div class="kbd-hint auto-hide" aria-hidden="true">
+      ← → NAVIGATE &nbsp;│&nbsp; SPACE MUTE &nbsp;│&nbsp; F FULLSCREEN &nbsp;│&nbsp; C CYCLE &nbsp;│&nbsp; T TODAY
+    </div>
+
   </div>
 
-  <!-- Bottom Timeline: ALL Exams Nov 2026 - Nov 2027 (Auto-hides after 2.5s!) -->
-  <div class="bottom-timeline auto-hide-ui" id="allPathsGrid"></div>
-</div>
+  <!-- ═══════ AUDIO ═══════ -->
+  <audio id="musicAudio" src="music/Music.mp3" loop preload="auto" style="display:none"></audio>
 
-<!-- DIRECTLY LINKED TO YOUR music/Music.mp3 FILE -->
-<audio id="musicAudioEl" src="music/Music.mp3" loop preload="auto" style="display:none"></audio>
+  <!-- ═══════ APPLICATION ═══════ -->
+  <script src="js/app.js"></script>
 
-<script>
-/* =========================================================================
-   1. AUTOMATIC "music/Music.mp3" + "TIE-TIK" CLOCK ENGINE
-   ========================================================================= */
-let audioCtx = null;
-let audioUnlocked = false;
-let audioMode = 'music_orig';
-let tickToggle = false;
-const musicEl = document.getElementById('musicAudioEl');
-
-const MUSIC_VARIANTS = {
-  music_orig:  { rate: 1.00, vol: 0.85, doubleTick: false }, // 83 BPM Original
-  music_slow:  { rate: 0.82, vol: 0.90, doubleTick: false }, // 67 BPM Slowed & Deepened
-  music_fast:  { rate: 1.18, vol: 0.92, doubleTick: true  }, // 101 BPM Boss Overdrive + 2x Tick
-  music_study: { rate: 0.74, vol: 0.32, doubleTick: false }, // 71 BPM Soft Study Mode
-  tickonly:    { rate: 1.00, vol: 0.00, doubleTick: false },
-  mute:        { rate: 1.00, vol: 0.00, doubleTick: false }
-};
-
-function unlockAndStartAudio() {
-  if (!audioCtx) {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    audioCtx = new AudioContext();
-  }
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  audioUnlocked = true;
-  document.getElementById('soundUnlockBanner').style.display = 'none';
-  applyMusicVariant();
-  playTieTikSound(true);
-}
-
-function applyMusicVariant() {
-  const v = MUSIC_VARIANTS[audioMode] || MUSIC_VARIANTS.music_orig;
-  if (!audioUnlocked || audioMode === 'mute' || audioMode === 'tickonly') {
-    musicEl.pause();
-    return;
-  }
-  if ('preservesPitch' in musicEl) musicEl.preservesPitch = false;
-  if ('webkitPreservesPitch' in musicEl) musicEl.webkitPreservesPitch = false;
-  musicEl.playbackRate = v.rate;
-  musicEl.volume = v.vol;
-  musicEl.play().then(() => {
-    document.getElementById('soundUnlockBanner').style.display = 'none';
-  }).catch(() => {});
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  musicEl.volume = 0.85;
-  musicEl.play().then(() => {
-    unlockAndStartAudio();
-  }).catch(() => {});
-});
-['click', 'pointerdown', 'keydown'].forEach(ev => {
-  window.addEventListener(ev, () => {
-    if (!audioUnlocked) unlockAndStartAudio();
-  }, { once: true });
-});
-
-/* Crisp Mechanical "Tie-Tik" Clock Escapement + Sub-Bass Thud */
-function playTieTikSound(isMainSecond) {
-  if (!audioUnlocked || !audioCtx || audioMode === 'mute') return;
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  const now = audioCtx.currentTime;
-  tickToggle = !tickToggle;
-
-  const clickOsc = audioCtx.createOscillator();
-  const clickGain = audioCtx.createGain();
-  const clickFilter = audioCtx.createBiquadFilter();
-
-  clickFilter.type = 'bandpass';
-  clickFilter.frequency.value = tickToggle ? 2450 : 1780;
-  clickFilter.Q.value = 5.5;
-
-  clickOsc.type = 'triangle';
-  clickOsc.frequency.setValueAtTime(tickToggle ? 1200 : 860, now);
-  clickOsc.frequency.exponentialRampToValueAtTime(160, now + 0.05);
-
-  const vol = audioMode === 'music_study' ? 0.12 : 0.42;
-  clickGain.gain.setValueAtTime(vol, now);
-  clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
-
-  clickOsc.connect(clickFilter);
-  clickFilter.connect(clickGain);
-  clickGain.connect(audioCtx.destination);
-  clickOsc.start(now);
-  clickOsc.stop(now + 0.065);
-
-  if (isMainSecond && audioMode !== 'music_study') {
-    const thudOsc = audioCtx.createOscillator();
-    const thudGain = audioCtx.createGain();
-    thudOsc.type = 'sine';
-    thudOsc.frequency.setValueAtTime(tickToggle ? 86 : 68, now);
-    thudOsc.frequency.exponentialRampToValueAtTime(24, now + 0.24);
-
-    thudGain.gain.setValueAtTime(0.32, now);
-    thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
-
-    thudOsc.connect(thudGain);
-    thudGain.connect(audioCtx.destination);
-    thudOsc.start(now);
-    thudOsc.stop(now + 0.28);
-  }
-}
-
-function updateAudioMode() {
-  audioMode = document.getElementById('audioModeSelect').value;
-  if (!audioUnlocked && audioMode !== 'mute') unlockAndStartAudio();
-  applyMusicVariant();
-}
-
-/* =========================================================================
-   2. COMPLETE EXAM TIMELINE (NOV 2026 - NOV 2027) + AUTO VARIANT MATCHING
-   ========================================================================= */
-let serverTimeOffsetMs = 0;
-let timeModeIdx = 1; // 10:30 AM GTU Start (click to toggle 10:00 AM reporting)
-let activeIdx = 1;   // Starts on 18 Dec MYDAYS ARE COMING
-let autoCycle = false;
-let cycleTimer = null;
-let lastSec = -1;
-
-const TIME_MODES = [
-  { hm: '10:00', short: '🕙 GTU: 10:00 AM' },
-  { hm: '10:30', short: '🕥 GTU: 10:30 AM' }
-];
-
-function getNextGtuExam(now, hm) {
-  const gtuPapers = [
-    { name: 'EXAM 1: MACHINE LEARNING', code: 'GTU 3170724', date: '01 DEC', start: `2026-12-01T${hm}:00+05:30`, end: '2026-12-01T13:00:00+05:30' },
-    { name: 'EXAM 2: COMPILER DESIGN',  code: 'GTU 3170701', date: '03 DEC', start: `2026-12-03T${hm}:00+05:30`, end: '2026-12-03T13:00:00+05:30' },
-    { name: 'EXAM 3: CLOUD COMPUTING',  code: 'GTU 3170717', date: '08 DEC', start: `2026-12-08T${hm}:00+05:30`, end: '2026-12-08T13:00:00+05:30' },
-    { name: 'EXAM 4: ARTIFICIAL INTEL', code: 'GTU 3170716', date: '14 DEC', start: `2026-12-14T${hm}:00+05:30`, end: '2026-12-14T13:00:00+05:30' },
-    { name: 'EXAM 5: MOBILE APP DEV',   code: 'GTU 3170726', date: '16 DEC', start: `2026-12-16T${hm}:00+05:30`, end: '2026-12-16T13:00:00+05:30' },
-    { name: 'EXAM 6: DISTRIBUTED SYS',  code: 'GTU 3170719', date: '18 DEC', start: `2026-12-18T${hm}:00+05:30`, end: '2026-12-18T13:00:00+05:30' }
-  ];
-  const next = gtuPapers.find(p => now < new Date(p.end)) || gtuPapers[gtuPapers.length - 1];
-  return {
-    short: `⚔️ ${next.date}: GTU NEXT`,
-    title: next.name,
-    code: `${next.code} // ${next.date} • ${hm} AM IST`,
-    dateStr: `${next.date} • ${hm} AM`,
-    startIso: next.start,
-    endIso: next.end,
-    bgIdx: 2,
-    variant: 'music_fast'
-  };
-}
-
-function buildFullCareerTimeline(now) {
-  const hm = TIME_MODES[timeModeIdx].hm;
-  return [
-    getNextGtuExam(now, hm),
-    {
-      short: '🟢 18 DEC: MYDAYS',
-      title: 'MYDAYS ARE COMING',
-      code: 'GTU SEM 7 FINALE // 18 DEC 2026 • 01:00 PM IST',
-      dateStr: '18 DEC • 01:00 PM',
-      startIso: '2026-12-18T13:00:00+05:30',
-      endIso: '2026-12-18T13:00:00+05:30',
-      bgIdx: 0, variant: 'music_orig'
-    },
-    {
-      short: '👑 06 FEB: GATE 2027',
-      title: 'GATE 2027 CS',
-      code: 'IIT MADRAS GATE CS // 06 FEB 2027 • 09:30 AM IST',
-      dateStr: '06 FEB • 09:30 AM',
-      startIso: '2027-02-06T09:30:00+05:30',
-      endIso: '2027-02-06T12:30:00+05:30',
-      bgIdx: 1, variant: 'music_slow'
-    },
-    {
-      short: '☢️ 14 MAR: BARC OCES',
-      title: 'BARC OCES 2027 CBT',
-      code: 'BARC SCIENTIFIC OFFICER C // 14 MAR 2027 • 09:00 AM IST',
-      dateStr: '14 MAR • BARC CBT',
-      startIso: '2027-03-14T09:00:00+05:30',
-      endIso: '2027-03-14T11:00:00+05:30',
-      bgIdx: 1, variant: 'music_fast'
-    },
-    {
-      short: '🛡️ 02 APR: DRDO & PSU',
-      title: 'DRDO & PSU SELECTION',
-      code: 'DRDO SCIENTIST B • BEL PE • ECIL GET • BARC UPLOAD',
-      dateStr: '02 APR • DRDO/BARC',
-      startIso: '2027-04-02T09:00:00+05:30',
-      endIso: '2027-04-02T17:00:00+05:30',
-      bgIdx: 3, variant: 'music_orig'
-    },
-    {
-      short: '🎙️ 12 MAY: BARC INTERVIEW',
-      title: 'BARC & SEM 8 FINALE',
-      code: 'BARC MUMBAI INTERVIEWS & GTU PDC // MAY-JUN 2027',
-      dateStr: '12 MAY • MUMBAI',
-      startIso: '2027-05-12T09:00:00+05:30',
-      endIso: '2027-06-12T17:00:00+05:30',
-      bgIdx: 0, variant: 'music_study'
-    },
-    {
-      short: '🏦 28 AUG: IBPS SO PRE',
-      title: 'IBPS SO IT OFFICER',
-      code: 'IBPS SO PRELIMS (AUG) & MAINS (NOV 2027)',
-      dateStr: 'LATE AUG • IBPS SO',
-      startIso: '2027-08-28T09:00:00+05:30',
-      endIso: '2027-08-28T11:00:00+05:30',
-      bgIdx: 3, variant: 'music_slow'
-    },
-    {
-      short: '🚀 19 SEP: ISRO & NIC',
-      title: 'ISRO & NIC SCIENTIST B',
-      code: 'ISRO ICRB SCIENTIST SC & NIC SCIENTIST B // SEP 2027',
-      dateStr: 'SEP-OCT • ISRO/NIC',
-      startIso: '2027-09-19T09:30:00+05:30',
-      endIso: '2027-09-19T12:30:00+05:30',
-      bgIdx: 1, variant: 'music_orig'
-    }
-  ];
-}
-
-let MILESTONES = buildFullCareerTimeline(new Date());
-
-function buildBottomGrid() {
-  const g = document.getElementById('allPathsGrid');
-  g.innerHTML = '';
-  MILESTONES.forEach((m, i) => {
-    const d = document.createElement('div');
-    d.className = 'path-box' + (i === activeIdx ? ' active-card' : '');
-    d.id = 'card' + i;
-    d.onclick = () => selectCard(i);
-    d.innerHTML = `
-      <div class="pb-name">${m.short}</div>
-      <div class="pb-time" id="miniT${i}">--:--:--:--:--</div>
-      <div class="pb-date">${m.dateStr}</div>
-    `;
-    g.appendChild(d);
-  });
-}
-
-function selectCard(idx) {
-  autoCycle = false;
-  if (cycleTimer) clearInterval(cycleTimer);
-  document.getElementById('btnDir').textContent = '🎥 Cycle: OFF';
-  document.getElementById('btnDir').classList.remove('active-btn');
-  applyCard(idx);
-}
-
-function applyCard(idx) {
-  activeIdx = idx;
-  const m = MILESTONES[idx];
-  if (audioMode !== 'mute' && audioMode !== 'tickonly') {
-    audioMode = m.variant;
-    document.getElementById('audioModeSelect').value = m.variant;
-    applyMusicVariant();
-  }
-  setWallpaper(m.bgIdx);
-  for (let i = 0; i < MILESTONES.length; i++) {
-    const el = document.getElementById('card' + i);
-    if (el) el.classList.toggle('active-card', i === idx);
-  }
-  updateDoomsdayClock();
-}
-
-function cycleTimeMode() {
-  timeModeIdx = (timeModeIdx + 1) % TIME_MODES.length;
-  document.getElementById('examTimeModeBadge').textContent = TIME_MODES[timeModeIdx].short;
-  MILESTONES = buildFullCareerTimeline(getTrueNow());
-  buildBottomGrid();
-  updateDoomsdayClock();
-}
-
-function toggleDirector() {
-  autoCycle = !autoCycle;
-  const btn = document.getElementById('btnDir');
-  btn.textContent = `🎥 Cycle: ${autoCycle ? 'ON' : 'OFF'}`;
-  btn.classList.toggle('active-btn', autoCycle);
-  if (cycleTimer) clearInterval(cycleTimer);
-  if (autoCycle) {
-    cycleTimer = setInterval(() => {
-      applyCard((activeIdx + 1) % MILESTONES.length);
-    }, 10000);
-  }
-}
-
-function setWallpaper(bgIdx) {
-  for (let i = 0; i < 4; i++) {
-    document.getElementById('bg' + i).classList.toggle('active', i === bgIdx);
-    document.getElementById('btnW' + i).classList.toggle('active-btn', i === bgIdx);
-  }
-}
-
-function forceBg(bgIdx) {
-  autoCycle = false;
-  if (cycleTimer) clearInterval(cycleTimer);
-  document.getElementById('btnDir').textContent = '🎥 Cycle: OFF';
-  document.getElementById('btnDir').classList.remove('active-btn');
-  setWallpaper(bgIdx);
-}
-
-/* =========================================================================
-   3. AUTO-HIDE ALL CLUTTER AFTER 2.5 SECONDS OF NO MOUSE MOVEMENT
-   ========================================================================= */
-let idleTimer = null;
-function wakeScreenUI() {
-  document.body.classList.remove('idle-cinema');
-  clearTimeout(idleTimer);
-  idleTimer = setTimeout(() => {
-    if (document.getElementById('todayModal').style.display !== 'block') {
-      document.body.classList.add('idle-cinema');
-    }
-  }, 2500);
-}
-window.addEventListener('mousemove', wakeScreenUI);
-window.addEventListener('touchstart', wakeScreenUI);
-window.addEventListener('keydown', wakeScreenUI);
-setTimeout(() => document.body.classList.add('idle-cinema'), 3000);
-
-/* =========================================================================
-   4. TODAY'S 3-LINE PLAN MODAL
-   ========================================================================= */
-const DAILY_PLAN_DB = {
-  '2026-11-16': '<b>Mon 16 Nov - Compiler Design (Units 4-5, SDT & ICG)</b><br>• <b>Morning (9:30-11:30):</b> S-attributed vs L-attributed SDDs, syntax trees, 3-address code (quadruples, triples, indirect triples), SSA + Compiler PDF Q1-Q15.<br>• <b>Afternoon (2:00-4:00):</b> 4 GTU problems on SDT and 3-address code.<br>• <b>Night (8:00-10:00) PYQs:</b> 2026 CS1 Q53; 2025 CS2 Q22; 2024 CS1 Q37; 2024 CS2 Q29, Q43; 2023 CS Q60; 2022 CS Q65.',
-  '2026-11-17': '<b>Tue 17 Nov - Compiler Design (Units 6-7, Runtime & Optimization)</b><br>• <b>Morning:</b> Activation records, basic blocks, CFG, DAG, liveness analysis, code optimization (Compiler PDF Q16-Q25).<br>• <b>Afternoon:</b> Draw CFGs and DAGs. Compute IN[B]/OUT[B] for 2 GTU problems.<br>• <b>Night PYQs:</b> 2026 CS1 Q42; 2026 CS2 Q45; 2025 CS1 Q13, Q52; 2024 CS1 Q39; 2023 CS Q36, Q37.',
-  '2026-11-18': '<b>Wed 18 Nov - Compiler Paper Lock-In</b><br>• <b>Morning:</b> Solve Winter 2024 & Summer 2025 GTU Compiler (3170701) papers + Compiler PDF Q26-Q38.<br>• <b>Afternoon:</b> Solve Winter 2023 & Summer 2024 papers.<br>• <b>Night:</b> Make a 4-page Compiler cheat sheet.'
-};
-
-function toggleTodayModal() {
-  const m = document.getElementById('todayModal');
-  if (m.style.display === 'block') { m.style.display = 'none'; return; }
-  const now = getTrueNow();
-  const key = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit'
-  }).format(now);
-  document.getElementById('todayModalTitle').textContent = `📅 PLAN FOR ${key} (IST)`;
-  document.getElementById('todayModalBody').innerHTML =
-    DAILY_PLAN_DB[key] || '<b>Active Phase:</b> Follow today\'s 3 blocks (Morning 9:30-11:30 Learn, Afternoon 2:00-4:00 Write Practice, Night 8:00-10:00 PYQs & GTU PDFs).';
-  m.style.display = 'block';
-}
-
-/* =========================================================================
-   5. LIVE NETWORK IST FETCHER & COUNTDOWN LOOP
-   ========================================================================= */
-async function syncLiveNetworkTime() {
-  try {
-    const t0 = Date.now();
-    const res = await fetch(window.location.href, { method: 'HEAD', cache: 'no-store' });
-    const dStr = res.headers.get('date');
-    if (dStr) {
-      const rtt = (Date.now() - t0) / 2;
-      serverTimeOffsetMs = (new Date(dStr).getTime() + rtt) - Date.now();
-    }
-  } catch (e) {}
-}
-
-function getTrueNow() {
-  return new Date(Date.now() + serverTimeOffsetMs);
-}
-
-function pad2(n) { return String(Math.max(0, n)).padStart(2, '0'); }
-
-function computeCalendarDiff(targetDate, now) {
-  if (now >= targetDate) return { m: '00', d: '00', h: '00', min: '00', s: '00', rawS: 0 };
-  let months = (targetDate.getFullYear() - now.getFullYear()) * 12 + (targetDate.getMonth() - now.getMonth());
-  let anchor = new Date(now.getFullYear(), now.getMonth() + months, now.getDate(),
-                        now.getHours(), now.getMinutes(), now.getSeconds());
-  if (anchor > targetDate) {
-    months--;
-    anchor = new Date(now.getFullYear(), now.getMonth() + months, now.getDate(),
-                      now.getHours(), now.getMinutes(), now.getSeconds());
-  }
-  let rem = targetDate - anchor;
-  const d = Math.floor(rem / 86400000); rem -= d * 86400000;
-  const h = Math.floor(rem / 3600000); rem -= h * 3600000;
-  const min = Math.floor(rem / 60000); rem -= min * 60000;
-  const s = Math.floor(rem / 1000);
-  return { m: pad2(months), d: pad2(d), h: pad2(h), min: pad2(min), s: pad2(s), rawS: s };
-}
-
-function updateDoomsdayClock() {
-  const now = getTrueNow();
-  MILESTONES[0] = getNextGtuExam(now, TIME_MODES[timeModeIdx].hm);
-
-  const istString = new Intl.DateTimeFormat('en-IN', {
-    timeZone: 'Asia/Kolkata',
-    weekday: 'short', day: '2-digit', month: 'short',
-    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
-  }).format(now).toUpperCase();
-  document.getElementById('networkTimeDisplay').textContent = `🛰️ IST: ${istString}`;
-
-  MILESTONES.forEach((m, idx) => {
-    const tStart = new Date(m.startIso);
-    const tEnd = new Date(m.endIso);
-    const miniEl = document.getElementById('miniT' + idx);
-
-    let activeTarget = tStart;
-    if (now >= tEnd) {
-      if (miniEl) miniEl.textContent = '✅ DONE';
-    } else {
-      const d = computeCalendarDiff(tStart, now);
-      if (miniEl) miniEl.textContent = `${d.m}:${d.d}:${d.h}:${d.min}:${d.s}`;
-    }
-
-    if (idx === activeIdx) {
-      const diff = computeCalendarDiff(activeTarget, now);
-      document.getElementById('pathKicker').textContent = m.code;
-      document.getElementById('headingText').textContent = m.title;
-      document.getElementById('dMonth').textContent = diff.m;
-      document.getElementById('dDays').textContent = diff.d;
-      document.getElementById('dHours').textContent = diff.h;
-      document.getElementById('dMinutes').textContent = diff.min;
-      const secEl = document.getElementById('dSeconds');
-      secEl.textContent = diff.s;
-
-      if (diff.rawS !== lastSec) {
-        lastSec = diff.rawS;
-        secEl.classList.add('tick-pulse');
-        setTimeout(() => secEl.classList.remove('tick-pulse'), 110);
-        playTieTikSound(true);
-        const v = MUSIC_VARIANTS[audioMode] || MUSIC_VARIANTS.music_orig;
-        if (v.doubleTick) {
-          setTimeout(() => playTieTikSound(false), 500);
-        }
-      }
-    }
-  });
-}
-
-/* =========================================================================
-   6. SPARKS & STARTUP
-   ========================================================================= */
-const ashCanvas = document.getElementById('ashCanvas');
-const ashCtx = ashCanvas.getContext('2d');
-let motes = [];
-function initMotes() {
-  ashCanvas.width = window.innerWidth;
-  ashCanvas.height = window.innerHeight;
-  motes = Array.from({ length: 42 }, () => ({
-    x: Math.random() * ashCanvas.width,
-    y: Math.random() * ashCanvas.height,
-    r: Math.random() * 1.6 + 0.4,
-    vx: (Math.random() - 0.5) * 0.22,
-    vy: -Math.random() * 0.35 - 0.08,
-    alpha: Math.random() * 0.55 + 0.15
-  }));
-}
-function animateMotes() {
-  ashCtx.clearRect(0, 0, ashCanvas.width, ashCanvas.height);
-  for (const m of motes) {
-    m.x += m.vx; m.y += m.vy;
-    if (m.y < 0) m.y = ashCanvas.height;
-    if (m.x < 0) m.x = ashCanvas.width;
-    if (m.x > ashCanvas.width) m.x = 0;
-    ashCtx.beginPath();
-    ashCtx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
-    ashCtx.fillStyle = `rgba(215, 255, 175, ${m.alpha})`;
-    ashCtx.fill();
-  }
-  requestAnimationFrame(animateMotes);
-}
-window.addEventListener('resize', initMotes);
-
-function toggleFS() {
-  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-  else document.exitFullscreen();
-}
-
-initMotes();
-animateMotes();
-buildBottomGrid();
-syncLiveNetworkTime();
-setInterval(syncLiveNetworkTime, 60000);
-updateDoomsdayClock();
-setInterval(updateDoomsdayClock, 100);
-</script>
 </body>
 </html>
