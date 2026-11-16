@@ -46,7 +46,7 @@
   const SYNC_INTERVAL_MS  = 60000;
   const CLOCK_INTERVAL_MS = 1000;
   const CYCLE_INTERVAL_MS = 10000;
-  const PARTICLE_COUNT    = 42;
+  const PARTICLE_COUNT    = window.innerWidth < 768 ? 16 : 42;
   const QUOTE_ROTATE_MS   = 18000;
 
   const MUSIC_VARIANTS = Object.freeze({

@@ -62,34 +62,34 @@
     <nav class="top-dock auto-hide" role="toolbar" aria-label="Mission controls">
       <span class="ist-badge" id="networkTime" aria-live="polite">🕒 IST SYNCING…</span>
 
-      <button class="btn-ctrl" onclick="MDC.cycleTimeMode()" id="examModeBadge"
+      <button class="btn-ctrl hide-mobile" onclick="MDC.cycleTimeMode()" id="examModeBadge"
               aria-label="Toggle GTU exam start time">
         🕥 GTU: 10:30 AM
       </button>
 
-      <button class="btn-ctrl" id="btnCycle" onclick="MDC.toggleAutoCycle()"
+      <button class="btn-ctrl hide-mobile" id="btnCycle" onclick="MDC.toggleAutoCycle()"
               aria-label="Toggle auto-cycle through milestones">
         🎥 Cycle: OFF
       </button>
 
-      <button class="btn-ctrl active" id="btnW0" onclick="MDC.forceBg(0)" aria-label="Background 1">BG 1</button>
-      <button class="btn-ctrl"        id="btnW1" onclick="MDC.forceBg(1)" aria-label="Background 2">BG 2</button>
-      <button class="btn-ctrl"        id="btnW2" onclick="MDC.forceBg(2)" aria-label="Background 3">BG 3</button>
-      <button class="btn-ctrl"        id="btnW3" onclick="MDC.forceBg(3)" aria-label="Background 4">BG 4</button>
+      <button class="btn-ctrl active hide-mobile" id="btnW0" onclick="MDC.forceBg(0)" aria-label="Background 1">BG 1</button>
+      <button class="btn-ctrl hide-mobile"        id="btnW1" onclick="MDC.forceBg(1)" aria-label="Background 2">BG 2</button>
+      <button class="btn-ctrl hide-mobile"        id="btnW2" onclick="MDC.forceBg(2)" aria-label="Background 3">BG 3</button>
+      <button class="btn-ctrl hide-mobile"        id="btnW3" onclick="MDC.forceBg(3)" aria-label="Background 4">BG 4</button>
 
       <!-- Music Mode Selector -->
       <select id="audioModeSelect" class="select-ctrl" onchange="MDC.onAudioModeChange()"
               aria-label="Select music mode">
-        <option value="music_orig">🔊 Original (83 BPM + Tick)</option>
-        <option value="music_slow">🌑 Slowed Dark (67 BPM)</option>
-        <option value="music_fast">⚡ Boss Overdrive (101 BPM)</option>
-        <option value="music_study">🧠 Soft Study (71 BPM)</option>
-        <option value="tickonly">⏱️ Clock Tick Only</option>
+        <option value="music_orig">🔊 Music</option>
+        <option value="music_slow">🌑 Slow</option>
+        <option value="music_fast">⚡ Fast</option>
+        <option value="music_study">🧠 Study</option>
+        <option value="tickonly">⏱️ Tick</option>
         <option value="mute">🔇 Mute</option>
       </select>
 
       <button class="btn-ctrl" onclick="MDC.toggleTodayModal()" aria-label="Show today's study plan">📅 Today</button>
-      <button class="btn-ctrl" onclick="MDC.toggleFullscreen()" aria-label="Toggle fullscreen">⛶</button>
+      <button class="btn-ctrl hide-mobile" onclick="MDC.toggleFullscreen()" aria-label="Toggle fullscreen">⛶</button>
     </nav>
 
     <!-- ═══════ TODAY'S PLAN MODAL ═══════ -->
