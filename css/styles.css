@@ -382,7 +382,7 @@ body {
   width: 96vw;
   max-width: 1440px;
   height: clamp(100px, 18vh, 180px);
-  pointer-events: none;
+  pointer-events: none;   /* arc background itself doesn't intercept clicks */
 }
 
 .mission-arc svg {
@@ -391,10 +391,10 @@ body {
   overflow: visible;
 }
 
-/* Arc milestone nodes */
+/* Arc milestone nodes — override pointer-events so they ARE clickable */
 .arc-node {
   cursor: pointer;
-  pointer-events: all;
+  pointer-events: all;    /* re-enable on the nodes specifically */
   transition: transform var(--transition-fast);
 }
 .arc-node:hover .arc-dot {
@@ -571,13 +571,15 @@ body.idle .auto-hide {
     justify-content: flex-start;
   }
   .btn-ctrl, .select-ctrl {
-    font-size: 0.52rem;
-    padding: 4px 8px;
+    font-size: 0.54rem;
+    padding: 5px 9px;
+    min-height: 34px;        /* better touch target */
     flex-shrink: 0;
   }
-  .mission-arc { height: clamp(80px, 14vh, 130px); }
-  .arc-node-label { font-size: 8px; letter-spacing: 0.06em; }
-  .arc-time-label { font-size: 7px; }
+  .mission-arc { height: clamp(90px, 16vh, 140px); }
+  /* Bigger arc labels on tablet */
+  .arc-node-label { font-size: 9.5px; letter-spacing: 0.06em; }
+  .arc-time-label { font-size: 8px; }
   .modal { width: 95%; padding: 18px 16px; }
   .modal h3 { font-size: 0.75rem; }
   .modal p { font-size: 0.7rem; }
@@ -587,50 +589,58 @@ body.idle .auto-hide {
 
 /* ── Phone Portrait (≤ 480px) ── */
 @media (max-width: 480px) {
-  .countdown-overlay { top: 42%; }
+  .countdown-overlay { top: 44%; }
   .digit-pair {
-    font-size: clamp(1.4rem, 10vw, 2.8rem);
+    font-size: clamp(2.2rem, 12vw, 3.5rem);   /* was 1.4rem — was way too small */
   }
   .colon-sep {
-    font-size: clamp(1rem, 7vw, 2rem);
+    font-size: clamp(1.6rem, 9vw, 2.6rem);
   }
   .sub-label {
-    font-size: clamp(0.35rem, 2.2vw, 0.5rem);
+    font-size: clamp(0.52rem, 2.8vw, 0.68rem); /* was 0.35rem — unreadable */
+    margin-top: 0.3rem;
   }
   .mission-kicker {
-    font-size: clamp(0.4rem, 2.5vw, 0.6rem);
+    font-size: clamp(0.52rem, 2.8vw, 0.68rem);
+    letter-spacing: 0.14em;
   }
   .mission-heading {
-    font-size: clamp(0.8rem, 4.5vw, 1.3rem);
-    letter-spacing: 0.12em;
-    padding-left: 0.12em;
+    font-size: clamp(1.1rem, 5.5vw, 1.7rem);  /* was 0.8rem */
+    letter-spacing: 0.1em;
+    padding-left: 0.1em;
   }
   .t-minus {
-    font-size: clamp(0.55rem, 2.8vw, 0.8rem);
+    font-size: clamp(0.68rem, 3.2vw, 0.9rem);
   }
   .quote-bar {
-    font-size: clamp(0.42rem, 2.5vw, 0.55rem);
-    padding: 0 8px;
+    font-size: clamp(0.52rem, 2.8vw, 0.65rem);
+    padding: 0 10px;
   }
   .top-dock {
     max-width: 100%;
     width: 100%;
     border-radius: 0;
     top: 0;
-    padding: 4px 6px;
-    gap: 3px;
+    padding: 6px 8px;
+    gap: 4px;
   }
-  .ist-badge { font-size: 0.48rem; padding-right: 5px; }
+  .btn-ctrl, .select-ctrl {
+    font-size: 0.58rem;
+    padding: 6px 10px;
+    min-height: 36px;         /* larger touch target */
+  }
+  .ist-badge { font-size: 0.54rem; padding-right: 6px; }
   .mission-arc {
     width: 100vw;
-    height: clamp(70px, 13vh, 110px);
+    height: clamp(80px, 15vh, 120px);
   }
-  .arc-node-label { font-size: 6.5px; letter-spacing: 0.04em; }
-  .arc-time-label { font-size: 5.5px; }
+  /* Larger arc labels on mobile */
+  .arc-node-label { font-size: 9px; letter-spacing: 0.04em; }
+  .arc-time-label { font-size: 7.5px; }
   .sound-unlock {
     top: 15vh;
-    padding: 10px 18px;
-    font-size: 0.55rem;
+    padding: 12px 20px;
+    font-size: 0.6rem;
     max-width: 90vw;
     text-align: center;
   }
@@ -638,15 +648,16 @@ body.idle .auto-hide {
 
 /* ── Very Small Phone (≤ 360px, e.g. iPhone SE, Galaxy A01) ── */
 @media (max-width: 360px) {
-  .countdown-overlay { top: 38%; }
-  .digit-pair { font-size: clamp(1.2rem, 9vw, 2.2rem); }
-  .colon-sep { font-size: clamp(0.9rem, 6vw, 1.6rem); }
-  .digits-row { gap: 0.15rem; }
-  .unit-block { min-width: 42px; }
+  .countdown-overlay { top: 40%; }
+  .digit-pair { font-size: clamp(1.9rem, 11vw, 2.8rem); }
+  .colon-sep { font-size: clamp(1.4rem, 8vw, 2rem); }
+  .digits-row { gap: 0.12rem; }
+  .unit-block { min-width: 46px; }
   .mission-heading {
-    font-size: clamp(0.7rem, 4vw, 1.1rem);
+    font-size: clamp(0.9rem, 5vw, 1.3rem);
     letter-spacing: 0.08em;
   }
+  .sub-label { font-size: clamp(0.48rem, 2.5vw, 0.6rem); }
 }
 
 /* ── Landscape on short screens (phone/tablet held sideways) ── */

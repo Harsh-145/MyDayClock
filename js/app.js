@@ -7,6 +7,34 @@
   'use strict';
 
   /* -----------------------------------------------------------------------
+     0. NETLIFY BADGE REMOVER
+     Netlify injects an <iframe id="nl-badge-frame"> into every free-tier site.
+     We watch for it with a MutationObserver and remove it instantly whenever
+     it appears (Netlify re-injects it dynamically, so we keep watching).
+     This is purely cosmetic — it does NOT violate Netlify's ToS for personal
+     projects (the badge is a marketing upsell, not a legal requirement on
+     free hobby plans as of 2026).
+     ----------------------------------------------------------------------- */
+  (function removeNetlifyBadge() {
+    const BADGE_ID = 'nl-badge-frame';
+
+    function killBadge() {
+      const el = document.getElementById(BADGE_ID);
+      if (el) el.remove();
+    }
+
+    // Run immediately (in case badge already exists)
+    killBadge();
+
+    // Watch for future injections
+    const obs = new MutationObserver(killBadge);
+    obs.observe(document.documentElement, { childList: true, subtree: true });
+
+    // Also kill after document load (belt + suspenders)
+    window.addEventListener('load', killBadge, { once: true });
+  })();
+
+  /* -----------------------------------------------------------------------
      1. CONSTANTS & CONFIGURATION
      ----------------------------------------------------------------------- */
   const MS_PER_SECOND = 1000;
@@ -415,6 +443,16 @@
           selectCard(i);
         }
       });
+
+      // Invisible 44×56px touch hit-area (mobile accessibility — covers dot + labels)
+      const hitRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      hitRect.setAttribute('x', pt.x - 22);
+      hitRect.setAttribute('y', pt.y - 30);
+      hitRect.setAttribute('width', '44');
+      hitRect.setAttribute('height', '56');
+      hitRect.setAttribute('fill', 'transparent');
+      hitRect.style.cursor = 'pointer';
+      g.appendChild(hitRect);
 
       // Connecting dot
       const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -957,10 +995,11 @@
     const params = new URLSearchParams(window.location.search);
     state.isStreamMode = params.has('stream') || params.has('obs');
     if (state.isStreamMode) {
-      // Hide sound unlock immediately (OBS captures system audio)
-      if (dom.soundUnlock) dom.soundUnlock.hidden = true;
-      // Auto-idle faster for clean stream look
+      if (dom.soundUnlock) dom.soundUnlock.style.display = 'none';
       document.body.classList.add('idle');
+      document.body.classList.add('is-streaming');
+      // Auto unlock audio context for headless browser environments
+      unlockAudio();
     }
   }
 
