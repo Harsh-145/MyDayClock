@@ -321,12 +321,12 @@
     <button class="btn-doom" id="btnW2" onclick="forceBg(2)">BG 3</button>
     <button class="btn-doom" id="btnW3" onclick="forceBg(3)">BG 4</button>
 
-    <!-- "THE BLOOD MOON - BY JELLO" (music/Music.mp3) 4 VARIANT SELECTOR -->
+    <!-- MUSIC (music/Music.mp3) 4 VARIANT SELECTOR -->
     <select id="audioModeSelect" class="select-doom" onchange="updateAudioMode()">
-      <option value="bloodmoon_orig">🩸 Blood Moon — Original (83 BPM + Tie-Tik)</option>
-      <option value="bloodmoon_slow">🌑 Blood Moon — Slowed Dark Edit (67 BPM)</option>
-      <option value="bloodmoon_fast">⚡ Blood Moon — Boss Overdrive (101 BPM + 2x Tick)</option>
-      <option value="bloodmoon_study">🧠 Blood Moon — Soft Study Edit (71 BPM)</option>
+      <option value="music_orig">🔊 Music — Original (83 BPM + Tie-Tik)</option>
+      <option value="music_slow">🌑 Music — Slowed Dark Edit (67 BPM)</option>
+      <option value="music_fast">⚡ Music — Boss Overdrive (101 BPM + 2x Tick)</option>
+      <option value="music_study">🧠 Music — Soft Study Edit (71 BPM)</option>
       <option value="tickonly">⏱️ Pure "Tie-Tik" Clock Only</option>
       <option value="mute">🔇 Mute</option>
     </select>
@@ -358,12 +358,12 @@
       </div>
       <div class="colon-sep">:</div>
       <div class="unit-block">
-        <div class="digit-pair" id="dHours">23</div>
+        <div class="digit-pair" id="dHours">22</div>
         <div class="sub-label">HOURS</div>
       </div>
       <div class="colon-sep">:</div>
       <div class="unit-block">
-        <div class="digit-pair" id="dMinutes">08</div>
+        <div class="digit-pair" id="dMinutes">43</div>
         <div class="sub-label">MINUTES</div>
       </div>
       <div class="colon-sep">:</div>
@@ -379,7 +379,7 @@
 </div>
 
 <!-- DIRECTLY LINKED TO YOUR music/Music.mp3 FILE -->
-<audio id="bloodMoonAudioEl" src="music/Music.mp3" loop preload="auto" style="display:none"></audio>
+<audio id="musicAudioEl" src="music/Music.mp3" loop preload="auto" style="display:none"></audio>
 
 <script>
 /* =========================================================================
@@ -387,17 +387,17 @@
    ========================================================================= */
 let audioCtx = null;
 let audioUnlocked = false;
-let audioMode = 'bloodmoon_orig';
+let audioMode = 'music_orig';
 let tickToggle = false;
-const bloodMoonEl = document.getElementById('bloodMoonAudioEl');
+const musicEl = document.getElementById('musicAudioEl');
 
-const JELLO_VARIANTS = {
-  bloodmoon_orig:  { rate: 1.00, vol: 0.85, doubleTick: false }, // 83 BPM Original
-  bloodmoon_slow:  { rate: 0.82, vol: 0.90, doubleTick: false }, // 67 BPM Slowed & Deepened
-  bloodmoon_fast:  { rate: 1.18, vol: 0.92, doubleTick: true  }, // 101 BPM Boss Overdrive + 2x Tick
-  bloodmoon_study: { rate: 0.74, vol: 0.32, doubleTick: false }, // 71 BPM Soft Study Mode
-  tickonly:        { rate: 1.00, vol: 0.00, doubleTick: false },
-  mute:            { rate: 1.00, vol: 0.00, doubleTick: false }
+const MUSIC_VARIANTS = {
+  music_orig:  { rate: 1.00, vol: 0.85, doubleTick: false }, // 83 BPM Original
+  music_slow:  { rate: 0.82, vol: 0.90, doubleTick: false }, // 67 BPM Slowed & Deepened
+  music_fast:  { rate: 1.18, vol: 0.92, doubleTick: true  }, // 101 BPM Boss Overdrive + 2x Tick
+  music_study: { rate: 0.74, vol: 0.32, doubleTick: false }, // 71 BPM Soft Study Mode
+  tickonly:    { rate: 1.00, vol: 0.00, doubleTick: false },
+  mute:        { rate: 1.00, vol: 0.00, doubleTick: false }
 };
 
 function unlockAndStartAudio() {
@@ -413,23 +413,23 @@ function unlockAndStartAudio() {
 }
 
 function applyMusicVariant() {
-  const v = JELLO_VARIANTS[audioMode] || JELLO_VARIANTS.bloodmoon_orig;
+  const v = MUSIC_VARIANTS[audioMode] || MUSIC_VARIANTS.music_orig;
   if (!audioUnlocked || audioMode === 'mute' || audioMode === 'tickonly') {
-    bloodMoonEl.pause();
+    musicEl.pause();
     return;
   }
-  if ('preservesPitch' in bloodMoonEl) bloodMoonEl.preservesPitch = false;
-  if ('webkitPreservesPitch' in bloodMoonEl) bloodMoonEl.webkitPreservesPitch = false;
-  bloodMoonEl.playbackRate = v.rate;
-  bloodMoonEl.volume = v.vol;
-  bloodMoonEl.play().then(() => {
+  if ('preservesPitch' in musicEl) musicEl.preservesPitch = false;
+  if ('webkitPreservesPitch' in musicEl) musicEl.webkitPreservesPitch = false;
+  musicEl.playbackRate = v.rate;
+  musicEl.volume = v.vol;
+  musicEl.play().then(() => {
     document.getElementById('soundUnlockBanner').style.display = 'none';
   }).catch(() => {});
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  bloodMoonEl.volume = 0.85;
-  bloodMoonEl.play().then(() => {
+  musicEl.volume = 0.85;
+  musicEl.play().then(() => {
     unlockAndStartAudio();
   }).catch(() => {});
 });
@@ -458,7 +458,7 @@ function playTieTikSound(isMainSecond) {
   clickOsc.frequency.setValueAtTime(tickToggle ? 1200 : 860, now);
   clickOsc.frequency.exponentialRampToValueAtTime(160, now + 0.05);
 
-  const vol = audioMode === 'bloodmoon_study' ? 0.12 : 0.42;
+  const vol = audioMode === 'music_study' ? 0.12 : 0.42;
   clickGain.gain.setValueAtTime(vol, now);
   clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
 
@@ -468,7 +468,7 @@ function playTieTikSound(isMainSecond) {
   clickOsc.start(now);
   clickOsc.stop(now + 0.065);
 
-  if (isMainSecond && audioMode !== 'bloodmoon_study') {
+  if (isMainSecond && audioMode !== 'music_study') {
     const thudOsc = audioCtx.createOscillator();
     const thudGain = audioCtx.createGain();
     thudOsc.type = 'sine';
@@ -524,7 +524,7 @@ function getNextGtuExam(now, hm) {
     startIso: next.start,
     endIso: next.end,
     bgIdx: 2,
-    variant: 'bloodmoon_fast'
+    variant: 'music_fast'
   };
 }
 
@@ -539,7 +539,7 @@ function buildFullCareerTimeline(now) {
       dateStr: '18 DEC • 01:00 PM',
       startIso: '2026-12-18T13:00:00+05:30',
       endIso: '2026-12-18T13:00:00+05:30',
-      bgIdx: 0, variant: 'bloodmoon_orig'
+      bgIdx: 0, variant: 'music_orig'
     },
     {
       short: '👑 06 FEB: GATE 2027',
@@ -548,7 +548,7 @@ function buildFullCareerTimeline(now) {
       dateStr: '06 FEB • 09:30 AM',
       startIso: '2027-02-06T09:30:00+05:30',
       endIso: '2027-02-06T12:30:00+05:30',
-      bgIdx: 1, variant: 'bloodmoon_slow'
+      bgIdx: 1, variant: 'music_slow'
     },
     {
       short: '☢️ 14 MAR: BARC OCES',
@@ -557,7 +557,7 @@ function buildFullCareerTimeline(now) {
       dateStr: '14 MAR • BARC CBT',
       startIso: '2027-03-14T09:00:00+05:30',
       endIso: '2027-03-14T11:00:00+05:30',
-      bgIdx: 1, variant: 'bloodmoon_fast'
+      bgIdx: 1, variant: 'music_fast'
     },
     {
       short: '🛡️ 02 APR: DRDO & PSU',
@@ -566,7 +566,7 @@ function buildFullCareerTimeline(now) {
       dateStr: '02 APR • DRDO/BARC',
       startIso: '2027-04-02T09:00:00+05:30',
       endIso: '2027-04-02T17:00:00+05:30',
-      bgIdx: 3, variant: 'bloodmoon_orig'
+      bgIdx: 3, variant: 'music_orig'
     },
     {
       short: '🎙️ 12 MAY: BARC INTERVIEW',
@@ -575,7 +575,7 @@ function buildFullCareerTimeline(now) {
       dateStr: '12 MAY • MUMBAI',
       startIso: '2027-05-12T09:00:00+05:30',
       endIso: '2027-06-12T17:00:00+05:30',
-      bgIdx: 0, variant: 'bloodmoon_study'
+      bgIdx: 0, variant: 'music_study'
     },
     {
       short: '🏦 28 AUG: IBPS SO PRE',
@@ -584,7 +584,7 @@ function buildFullCareerTimeline(now) {
       dateStr: 'LATE AUG • IBPS SO',
       startIso: '2027-08-28T09:00:00+05:30',
       endIso: '2027-08-28T11:00:00+05:30',
-      bgIdx: 3, variant: 'bloodmoon_slow'
+      bgIdx: 3, variant: 'music_slow'
     },
     {
       short: '🚀 19 SEP: ISRO & NIC',
@@ -593,7 +593,7 @@ function buildFullCareerTimeline(now) {
       dateStr: 'SEP-OCT • ISRO/NIC',
       startIso: '2027-09-19T09:30:00+05:30',
       endIso: '2027-09-19T12:30:00+05:30',
-      bgIdx: 1, variant: 'bloodmoon_orig'
+      bgIdx: 1, variant: 'music_orig'
     }
   ];
 }
@@ -796,7 +796,7 @@ function updateDoomsdayClock() {
         secEl.classList.add('tick-pulse');
         setTimeout(() => secEl.classList.remove('tick-pulse'), 110);
         playTieTikSound(true);
-        const v = JELLO_VARIANTS[audioMode] || JELLO_VARIANTS.bloodmoon_orig;
+        const v = MUSIC_VARIANTS[audioMode] || MUSIC_VARIANTS.music_orig;
         if (v.doubleTick) {
           setTimeout(() => playTieTikSound(false), 500);
         }
