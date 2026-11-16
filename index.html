@@ -2,860 +2,855 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HARSH YADAV // DOOMSDAY IS COMING</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>MYDAYS ARE COMING // HARSH YADAV</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-  body, html {
-    width: 100vw; height: 100vh; overflow: hidden;
+  * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    width: 100vw; height: 100vh;
+    overflow: hidden;
     background: #000000;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
     color: #ffffff;
   }
 
-  .cinema-stage {
-    position: relative;
+  /* 1. FULLSCREEN STAGE (ZERO BLACK BARS, ZERO CLUTTER) */
+  .cinema-frame {
+    position: fixed; inset: 0;
     width: 100vw; height: 100vh;
-    background: #020502;
     overflow: hidden;
+    background: #020602;
   }
 
-  /* 1. Multi-Wallpaper Cross-Fade Layers with Slow IMAX Camera Push-In */
-  .bg-layer {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    background-size: cover;
-    background-position: center 22%;
+  /* 4 Overscaled Fullscreen Wallpapers Directly Linked to img/1.jpg .. img/4.jpg */
+  .bg-img {
+    position: fixed;
+    top: -6vh; left: -6vw;
+    width: 112vw; height: 112vh;
+    object-fit: cover;
+    object-position: center 18%;
     opacity: 0;
     transition: opacity 1.2s ease-in-out;
-    z-index: 1;
-    will-change: transform, opacity;
-  }
-  .bg-layer.active {
-    opacity: 1;
-    animation: imaxPush 18s infinite alternate ease-in-out;
-  }
-  @keyframes imaxPush {
-    0% { transform: scale(1.0); }
-    100% { transform: scale(1.045); }
-  }
-
-  /* Subtle Second-Tick Rim Flash Overlay */
-  #tickFlashOverlay {
-    position: absolute; inset: 0;
-    background: radial-gradient(circle at 52% 35%, rgba(185, 255, 110, 0.08), transparent 65%);
-    opacity: 0;
     z-index: 2;
     pointer-events: none;
-    transition: opacity 0.12s ease;
+    will-change: transform, opacity;
+  }
+  .bg-img.active {
+    opacity: 1;
+    animation: slowPan 18s infinite alternate ease-in-out;
+  }
+  @keyframes slowPan {
+    0% { transform: scale(1.0); }
+    100% { transform: scale(1.05); }
   }
 
-  /* 2. Live Golden-Emerald Sparks & Ash Canvas (Matches the sparks in your 4 images) */
-  #sparksCanvas {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
+  #ashCanvas {
+    position: fixed; inset: 0;
+    width: 100vw; height: 100vh;
     z-index: 3;
     pointer-events: none;
   }
 
-  /* 3. Cinema Shadow Cushion Behind Clock (Keeps upper 65% face/mask 100% crystal clear) */
-  .shadow-cushion {
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse at 50% 42%, transparent 45%, rgba(0, 0, 0, 0.72) 88%, rgba(0, 0, 0, 0.95) 100%),
-      linear-gradient(to bottom,
-        rgba(0,0,0,0.35) 0%,
-        transparent 14%,
-        transparent 54%,
-        rgba(1, 5, 1, 0.76) 69%,
-        rgba(0, 0, 0, 0.92) 84%,
-        rgba(0, 0, 0, 0.98) 100%);
+  .shadow-gradient {
+    position: fixed; inset: 0;
+    background: linear-gradient(to bottom,
+      transparent 0%,
+      transparent 52%,
+      rgba(1, 6, 1, 0.72) 68%,
+      rgba(0, 0, 0, 0.90) 86%,
+      rgba(0, 0, 0, 0.96) 100%);
     z-index: 4;
     pointer-events: none;
   }
 
-  /* IMAX Letterbox Bars */
-  .letterbox-top, .letterbox-bottom {
-    position: absolute; left: 0; width: 100%; height: 3.8vh;
-    background: #000000; z-index: 9; pointer-events: none;
+  /* 2. SOUND UNLOCK BANNER (Auto-hides immediately if browser allows autoplay or on first click) */
+  #soundUnlockBanner {
+    position: fixed;
+    top: 12vh; left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    background: linear-gradient(135deg, rgba(22, 68, 14, 0.96), rgba(6, 22, 4, 0.99));
+    border: 2px solid #b8ff6b;
+    color: #ffffff;
+    padding: 12px 26px;
+    border-radius: 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(0.66rem, 0.92vw, 0.8rem);
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 0 32px rgba(155, 255, 90, 0.65);
   }
-  .letterbox-top { top: 0; }
-  .letterbox-bottom { bottom: 0; }
 
-  /* 4. EXACT SCREENSHOT COUNTDOWN TYPOGRAPHY (Calibrated to y = 74% below face/mask) */
-  .clock-container {
-    position: absolute;
-    left: 50%; top: 74%;
+  /* 3. CENTER COUNTDOWN OVERLAY */
+  .doomsday-clock-overlay {
+    position: fixed;
+    left: 50%; top: 69%;
     transform: translate(-50%, -50%);
-    z-index: 7;
+    z-index: 10;
     text-align: center;
     width: 96%;
-    max-width: 1180px;
+    max-width: 1160px;
   }
-
-  .doomsday-header {
-    font-size: clamp(1.05rem, 2.15vw, 1.9rem);
+  .path-kicker {
+    font-size: clamp(0.52rem, 0.82vw, 0.76rem);
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    color: rgba(195, 255, 135, 0.88);
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.98);
+  }
+  .doomsday-heading {
+    font-size: clamp(1.1rem, 2.2vw, 1.95rem);
     font-weight: 800;
     letter-spacing: 0.22em;
     padding-left: 0.22em;
     text-transform: uppercase;
     color: #ffffff;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.98), 0 0 26px rgba(170, 255, 110, 0.38);
-    margin-bottom: clamp(0.55rem, 1.3vh, 1.05rem);
+    text-shadow: 0 4px 18px rgba(0,0,0,0.98), 0 0 24px rgba(175, 255, 125, 0.3);
+    margin-bottom: clamp(0.45rem, 1.15vh, 0.95rem);
   }
-
-  .clock-row {
+  .digits-row {
     display: flex;
     justify-content: center;
     align-items: baseline;
-    gap: clamp(0.32rem, 1.3vw, 1.15rem);
+    gap: clamp(0.24rem, 1.3vw, 1.12rem);
   }
-
-  .time-col {
+  .unit-block {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: clamp(62px, 10.5vw, 134px);
+    min-width: clamp(52px, 10.4vw, 132px);
   }
-
-  .time-digits {
-    font-size: clamp(2.1rem, 5.3vw, 4.75rem);
+  .digit-pair {
+    font-size: clamp(1.75rem, 5.2vw, 4.7rem);
     font-weight: 600;
     letter-spacing: 0.17em;
     padding-left: 0.17em;
     color: #ffffff;
     font-variant-numeric: tabular-nums;
-    line-height: 1.04;
-    text-shadow: 0 6px 26px rgba(0,0,0,0.98), 0 0 30px rgba(185, 255, 130, 0.28);
+    line-height: 1.05;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.98), 0 0 28px rgba(185, 255, 140, 0.25);
     transition: transform 0.08s ease, text-shadow 0.08s ease;
   }
-  .time-digits.tick-pop {
-    transform: scale(1.042);
-    text-shadow: 0 6px 26px rgba(0,0,0,0.98), 0 0 42px rgba(215, 255, 160, 0.85);
+  .digit-pair.tick-pulse {
+    transform: scale(1.038);
+    text-shadow: 0 4px 24px rgba(0,0,0,0.98), 0 0 40px rgba(205, 255, 155, 0.82);
   }
-
-  .time-colon {
-    font-size: clamp(1.8rem, 4.3vw, 3.8rem);
+  .colon-sep {
+    font-size: clamp(1.4rem, 4.1vw, 3.6rem);
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.94);
+    color: #ffffff;
     transform: translateY(-0.12em);
-    text-shadow: 0 4px 20px rgba(0,0,0,0.98);
+    text-shadow: 0 4px 18px rgba(0,0,0,0.98);
   }
-
-  .time-label {
-    margin-top: clamp(0.45rem, 1.05vh, 0.78rem);
-    font-size: clamp(0.52rem, 0.8vw, 0.74rem);
+  .sub-label {
+    margin-top: clamp(0.35rem, 0.95vh, 0.75rem);
+    font-size: clamp(0.42rem, 0.76vw, 0.72rem);
     font-weight: 600;
-    letter-spacing: 0.25em;
-    padding-left: 0.25em;
-    color: rgba(240, 250, 236, 0.92);
+    letter-spacing: 0.24em;
+    padding-left: 0.24em;
+    color: rgba(240, 248, 238, 0.9);
     text-transform: uppercase;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.98);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.98);
   }
 
-  /* 5. ONE-TIME 4-IMAGE LOADER MODAL */
-  #loaderModal {
-    position: absolute; inset: 0;
-    z-index: 30;
-    background: rgba(2, 7, 2, 0.9);
-    backdrop-filter: blur(14px);
-    display: flex; justify-content: center; align-items: center;
-    padding: 20px;
+  /* 4. AUTO-HIDING UI (COMPLETELY INVISIBLE AFTER 2.5s OF NO MOUSE MOVE) */
+  .auto-hide-ui {
+    transition: opacity 0.45s ease, transform 0.45s ease;
   }
-  .modal-card {
-    max-width: 610px; width: 100%;
-    background: linear-gradient(145deg, rgba(12, 34, 10, 0.97), rgba(3, 10, 3, 0.99));
-    border: 1.5px solid #a6ff68;
-    border-radius: 12px;
-    padding: 30px 26px;
-    text-align: center;
-    box-shadow: 0 0 55px rgba(140, 245, 80, 0.35), 0 20px 60px rgba(0,0,0,0.98);
-  }
-  .modal-card h2 {
-    font-size: 1.15rem; letter-spacing: 0.18em; color: #c8ff8a;
-    text-transform: uppercase; margin-bottom: 12px;
-  }
-  .modal-card p {
-    font-size: 0.8rem; line-height: 1.6; color: #dcf0d8; margin-bottom: 20px;
-  }
-  .upload-big-btn {
-    display: block;
-    border: 2px dashed #b2ff78;
-    background: rgba(28, 78, 20, 0.52);
-    padding: 22px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.84rem;
-    font-weight: 800;
-    letter-spacing: 0.13em;
-    color: #ffffff;
-    text-transform: uppercase;
-    transition: all 0.2s ease;
-    margin-bottom: 14px;
-  }
-  .upload-big-btn:hover {
-    background: rgba(48, 125, 34, 0.75);
-    box-shadow: 0 0 28px rgba(175, 255, 110, 0.55);
+  body.idle-cinema .auto-hide-ui {
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
-  /* Sound Unlock Floating Pill (Shown when returning after images are already saved) */
-  #audioUnlockPill {
-    position: absolute;
-    top: 10vh; left: 50%;
+  .top-dock {
+    position: fixed;
+    top: 14px; left: 50%;
     transform: translateX(-50%);
-    z-index: 25;
-    display: none;
-    background: linear-gradient(135deg, rgba(24, 72, 16, 0.95), rgba(6, 20, 4, 0.98));
-    border: 1.5px solid #b8ff6b;
-    color: #ffffff;
-    padding: 11px 26px;
-    border-radius: 40px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    cursor: pointer;
-    box-shadow: 0 0 28px rgba(160, 255, 95, 0.55);
-  }
-
-  /* 6. TOP AUTO-HIDING HUD */
-  .top-hud {
-    position: absolute;
-    top: 4.8vh; left: 16px; right: 16px;
-    z-index: 15;
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 8px;
-    opacity: 0.18;
-    transition: opacity 0.3s ease;
-  }
-  .top-hud:hover { opacity: 1; }
-  .hud-grp { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-  .hud-btn, .hud-sel {
-    background: rgba(5, 15, 5, 0.88);
-    border: 1px solid rgba(155, 245, 95, 0.45);
-    color: #ebffdf;
-    padding: 6px 10px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border-radius: 4px;
-    cursor: pointer;
-    backdrop-filter: blur(8px);
-    transition: all 0.2s ease;
-  }
-  .hud-btn:hover, .hud-sel:hover, .hud-btn.active-bg {
-    background: rgba(42, 110, 24, 0.92);
-    border-color: #c8ff8a;
-    box-shadow: 0 0 12px rgba(160, 255, 95, 0.45);
-  }
-
-  /* 7. BOTTOM GTU PDF TRACKER */
-  .bottom-hud {
-    position: absolute;
-    bottom: 4.8vh; left: 50%;
-    transform: translateX(-50%);
-    z-index: 15;
-    width: 92%; max-width: 980px;
-    display: flex; flex-direction: column; align-items: center;
-  }
-  .tracker-pill {
-    background: rgba(4, 14, 4, 0.85);
-    border: 1px solid rgba(150, 240, 90, 0.42);
-    padding: 7px 22px;
+    z-index: 22;
+    display: flex; align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 6px;
+    width: 96%; max-width: 1180px;
+    background: rgba(4, 14, 4, 0.88);
+    border: 1px solid rgba(165, 255, 100, 0.4);
+    padding: 7px 14px;
     border-radius: 30px;
-    font-size: 0.68rem;
+    backdrop-filter: blur(12px);
+  }
+  .ist-badge {
+    font-size: 0.6rem;
     font-weight: 700;
-    letter-spacing: 0.14em;
-    color: #d2ffad;
+    letter-spacing: 0.11em;
+    color: #b8ff6b;
+    padding-right: 8px;
+    border-right: 1px solid rgba(165, 255, 100, 0.3);
+    font-variant-numeric: tabular-nums;
+  }
+  .btn-doom, .select-doom {
+    background: rgba(14, 38, 12, 0.88);
+    border: 1px solid rgba(158, 245, 98, 0.42);
+    color: #eaffdf;
+    padding: 5px 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.59rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 20px;
     cursor: pointer;
-    opacity: 0.55;
+    transition: all 0.2s ease;
+  }
+  .btn-doom:hover, .select-doom:hover, .btn-doom.active-btn {
+    background: rgba(42, 112, 24, 0.95);
+    border-color: #c6ff87;
+  }
+
+  /* Minimal Bottom Timeline (Nov 2026 - Nov 2027 Complete Journey) */
+  .bottom-timeline {
+    position: fixed;
+    bottom: 12px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 22;
+    width: 96vw;
+    max-width: 1440px;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+  }
+  .path-box {
+    background: rgba(4, 12, 4, 0.82);
+    border: 1px solid rgba(145, 235, 85, 0.28);
+    border-radius: 6px;
+    padding: 6px 5px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
     transition: all 0.25s ease;
   }
-  .tracker-pill:hover { opacity: 1; border-color: #c8ff8a; background: rgba(18, 52, 12, 0.95); }
-  .tracker-drawer {
+  .path-box.active-card {
+    background: rgba(24, 68, 16, 0.94);
+    border-color: #b8ff6b;
+    box-shadow: 0 0 14px rgba(165, 255, 95, 0.4);
+    transform: translateY(-2px);
+  }
+  .pb-name {
+    font-size: clamp(0.42rem, 0.54vw, 0.52rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #a8f06a;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .pb-time {
+    font-size: clamp(0.54rem, 0.8vw, 0.78rem);
+    font-weight: 700;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+  }
+  .pb-date {
+    font-size: clamp(0.38rem, 0.46vw, 0.45rem);
+    letter-spacing: 0.06em;
+    color: rgba(210, 230, 205, 0.72);
+    margin-top: 2px;
+  }
+
+  #todayModal {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 40;
     display: none;
-    width: 100%;
-    max-height: 46vh;
-    overflow-y: auto;
-    margin-bottom: 10px;
-    background: rgba(3, 10, 3, 0.96);
-    border: 1px solid rgba(155, 245, 95, 0.5);
-    border-radius: 8px;
-    padding: 16px 20px;
+    width: 92%; max-width: 560px;
+    background: rgba(4, 14, 4, 0.96);
+    border: 1.5px solid #b8ff6b;
+    border-radius: 12px;
+    padding: 22px 24px;
     backdrop-filter: blur(16px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.95);
   }
-  .tracker-drawer.open { display: block; }
-  .tracker-drawer h4 {
-    font-size: 0.78rem; letter-spacing: 0.16em; color: #b8ff6b;
-    margin-bottom: 10px; text-transform: uppercase;
+  #todayModal h3 {
+    font-size: 0.85rem; letter-spacing: 0.16em; color: #b8ff6b;
+    text-transform: uppercase; margin-bottom: 10px;
   }
-  .tracker-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
-    gap: 9px;
+  #todayModal p {
+    font-size: 0.78rem; line-height: 1.65; color: #e8ffe0; margin-bottom: 14px;
   }
-  .t-card {
-    background: rgba(14, 34, 12, 0.72);
-    border: 1px solid rgba(125, 210, 80, 0.3);
-    padding: 9px 12px; border-radius: 6px;
-    font-size: 0.71rem; line-height: 1.45;
+
+  @media (max-width: 1100px) {
+    .bottom-timeline { grid-template-columns: repeat(4, 1fr); }
+    .doomsday-clock-overlay { top: 62%; }
   }
-  .t-card strong { color: #c2ff85; display: block; margin-bottom: 3px; }
-  .t-card label { display: flex; gap: 7px; align-items: flex-start; cursor: pointer; }
-  .t-card input { accent-color: #7ee840; margin-top: 2px; }
+  @media (max-width: 600px) {
+    .bottom-timeline { grid-template-columns: repeat(2, 1fr); gap: 4px; }
+    .doomsday-clock-overlay { top: 54%; }
+  }
 </style>
 </head>
 <body>
 
-<div class="cinema-stage">
-  <div class="letterbox-top"></div>
+<div class="cinema-frame">
+  <!-- 4 Fullscreen Wallpapers Directly Linked to Your img/1.jpg .. img/4.jpg -->
+  <img class="bg-img active" id="bg0" src="img/1.jpg" alt=""/>
+  <img class="bg-img" id="bg1" src="img/2.jpg" alt=""/>
+  <img class="bg-img" id="bg2" src="img/3.jpg" alt=""/>
+  <img class="bg-img" id="bg3" src="img/4.jpg" alt=""/>
 
-  <!-- 4 Full-HD Cross-Fading Wallpaper Slots -->
-  <div class="bg-layer active" id="bgSlot0"></div>
-  <div class="bg-layer" id="bgSlot1"></div>
-  <div class="bg-layer" id="bgSlot2"></div>
-  <div class="bg-layer" id="bgSlot3"></div>
+  <canvas id="ashCanvas"></canvas>
+  <div class="shadow-gradient"></div>
 
-  <div id="tickFlashOverlay"></div>
-  <canvas id="sparksCanvas"></canvas>
-  <div class="shadow-cushion"></div>
-
-  <!-- One-Time Multi-Image Setup Modal -->
-  <div id="loaderModal">
-    <div class="modal-card">
-      <h2>👑 LOAD YOUR 4 DOOMSDAY MASTERPIECE IMAGES</h2>
-      <p>
-        Click below and <strong>select all 4 of your generated Doom images at once</strong> (hold <code>Ctrl</code> or drag-select all 4 files).<br>
-        They will be stored permanently at <strong>100% Full HD</strong> inside your browser's database and linked automatically to your exams &amp; "Tie-Tik" audio!
-      </p>
-      <label class="upload-big-btn">
-        🔥 SELECT ALL 4 OF YOUR DOOM IMAGES AT ONCE
-        <input type="file" accept="image/*" multiple style="display:none" onchange="handleMultiWallpapers(event)">
-      </label>
-    </div>
-  </div>
-
-  <!-- Audio Unlock Button (Appears on reload when images are already stored) -->
-  <button id="audioUnlockPill" onclick="unlockAudioEngine()">
-    🔊 CLICK TO START "TIE-TIK" CLOCK &amp; DOOMSDAY THEME
+  <!-- Sound Unlock Banner (Vanishes as soon as audio starts) -->
+  <button id="soundUnlockBanner" onclick="unlockAndStartAudio()">
+    🔊 CLICK ANYWHERE TO START MUSIC &amp; "TIE-TIK" CLOCK
   </button>
 
-  <!-- Top Controls -->
-  <div class="top-hud">
-    <div class="hud-grp">
-      <!-- Milestone & Task Selector (Auto-switches Wallpaper + Audio Tempo) -->
-      <select id="milestoneSel" class="hud-sel" onchange="onMilestoneChange()">
-        <option value="2026-12-18T13:00:00+05:30|DOOMSDAY IS COMING|0|1">
-          🟢 DOOMSDAY: GTU SEM 7 FINALE (18 DEC 2026)
-        </option>
-        <option value="2026-12-01T10:30:00+05:30|MACHINE LEARNING IS COMING|2|1">
-          ⚔️ PAPER 1: MACHINE LEARNING (01 DEC — 36 Qs)
-        </option>
-        <option value="2026-12-03T10:30:00+05:30|COMPILER DESIGN IS COMING|2|2">
-          🔥 PAPER 2: COMPILER DESIGN (03 DEC — 38 Qs)
-        </option>
-        <option value="2026-12-08T10:30:00+05:30|CLOUD COMPUTING IS COMING|0|1">
-          ☁️ PAPER 3: CLOUD COMPUTING (08 DEC — 32 Qs)
-        </option>
-        <option value="2026-12-14T10:30:00+05:30|ARTIFICIAL INTELLIGENCE|3|1">
-          🧠 PAPER 4: ARTIFICIAL INTELLIGENCE (14 DEC — 51 Qs)
-        </option>
-        <option value="2026-12-16T10:30:00+05:30|MOBILE APP DEVELOPMENT|3|2">
-          📱 PAPER 5: MAD EXAM (16 DEC — 40 Qs)
-        </option>
-        <option value="2027-02-06T09:30:00+05:30|GATE 2027 CS IS COMING|1|1">
-          👑 GATE 2027 CS: THE MAIN EVENT (06 FEB 2027)
-        </option>
-        <option value="2027-03-14T09:00:00+05:30|BARC OCES 2027 IS COMING|1|1">
-          ☢️ BARC OCES 2027 CBT (14 MAR 2027)
-        </option>
-      </select>
+  <!-- Minimal Top Dock (Auto-hides after 2.5s of no mouse movement!) -->
+  <div class="top-dock auto-hide-ui">
+    <span class="ist-badge" id="networkTimeDisplay">🕒 IST SYNCING...</span>
 
-      <!-- Direct Wallpaper Switcher Buttons -->
-      <button class="hud-btn active-bg" id="btnBg0" onclick="activateWallpaper(0, false)">BG 1: Mask</button>
-      <button class="hud-btn" id="btnBg1" onclick="activateWallpaper(1, false)">BG 2: Cosmic</button>
-      <button class="hud-btn" id="btnBg2" onclick="activateWallpaper(2, false)">BG 3: Cyber</button>
-      <button class="hud-btn" id="btnBg3" onclick="activateWallpaper(3, false)">BG 4: Sovereign</button>
-      <button class="hud-btn" id="btnCycle" onclick="toggleAutoCycle()">🔄 Auto-Cycle: OFF</button>
-    </div>
+    <button class="btn-doom" onclick="cycleTimeMode()" id="examTimeModeBadge">
+      🕥 GTU: 10:30 AM
+    </button>
+    <button class="btn-doom" id="btnDir" onclick="toggleDirector()">🎥 Cycle: OFF</button>
+    <button class="btn-doom active-btn" id="btnW0" onclick="forceBg(0)">BG 1</button>
+    <button class="btn-doom" id="btnW1" onclick="forceBg(1)">BG 2</button>
+    <button class="btn-doom" id="btnW2" onclick="forceBg(2)">BG 3</button>
+    <button class="btn-doom" id="btnW3" onclick="forceBg(3)">BG 4</button>
 
-    <div class="hud-grp">
-      <!-- Sound Mode Selector -->
-      <select id="audioSel" class="hud-sel" onchange="onAudioModeChange()">
-        <option value="cinema">🔊 Audio: "Tie-Tik" + Dark Doomsday Score</option>
-        <option value="tickonly">⏱️ Audio: Pure "Tie-Tik" Clock Only</option>
-        <option value="urgent">⚡ Audio: Urgent Double "Tie-Tik" + Score</option>
-        <option value="study">🧠 Audio: Soft Tick + 40Hz Study Focus</option>
-        <option value="mute">🔇 Audio: Muted</option>
-      </select>
+    <!-- "THE BLOOD MOON - BY JELLO" (music/Music.mp3) 4 VARIANT SELECTOR -->
+    <select id="audioModeSelect" class="select-doom" onchange="updateAudioMode()">
+      <option value="bloodmoon_orig">🩸 Blood Moon — Original (83 BPM + Tie-Tik)</option>
+      <option value="bloodmoon_slow">🌑 Blood Moon — Slowed Dark Edit (67 BPM)</option>
+      <option value="bloodmoon_fast">⚡ Blood Moon — Boss Overdrive (101 BPM + 2x Tick)</option>
+      <option value="bloodmoon_study">🧠 Blood Moon — Soft Study Edit (71 BPM)</option>
+      <option value="tickonly">⏱️ Pure "Tie-Tik" Clock Only</option>
+      <option value="mute">🔇 Mute</option>
+    </select>
 
-      <label class="hud-btn">
-        🎵 Custom MP3
-        <input type="file" accept="audio/*" style="display:none" onchange="loadCustomTrack(event)">
-      </label>
-      <label class="hud-btn">
-        🖼️ Change 4 Images
-        <input type="file" accept="image/*" multiple style="display:none" onchange="handleMultiWallpapers(event)">
-      </label>
-      <button class="hud-btn" onclick="promptHeading()">✏️ Title</button>
-      <button class="hud-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
-    </div>
+    <button class="btn-doom" onclick="toggleTodayModal()">📅 Today</button>
+    <button class="btn-doom" onclick="toggleFS()">⛶</button>
+  </div>
+
+  <!-- Today's 3-Block Plan Popup -->
+  <div id="todayModal">
+    <h3 id="todayModalTitle">📅 TODAY'S PLAN</h3>
+    <p id="todayModalBody"></p>
+    <button class="btn-doom" onclick="toggleTodayModal()">Close</button>
   </div>
 
   <!-- Center Countdown Overlay -->
-  <div class="clock-container" id="clockBox">
-    <div class="doomsday-header" id="headerTitle">DOOMSDAY IS COMING</div>
-    <div class="clock-row">
-      <div class="time-col">
-        <div class="time-digits" id="numMonth">01</div>
-        <div class="time-label">MONTH</div>
+  <div class="doomsday-clock-overlay">
+    <div class="path-kicker" id="pathKicker">GTU SEM 7 FINALE // 18 DEC 2026 • 01:00 PM IST</div>
+    <div class="doomsday-heading" id="headingText">MYDAYS ARE COMING</div>
+    <div class="digits-row">
+      <div class="unit-block">
+        <div class="digit-pair" id="dMonth">01</div>
+        <div class="sub-label">MONTH</div>
       </div>
-      <div class="time-colon">:</div>
-      <div class="time-col">
-        <div class="time-digits" id="numDays">02</div>
-        <div class="time-label">DAYS</div>
+      <div class="colon-sep">:</div>
+      <div class="unit-block">
+        <div class="digit-pair" id="dDays">01</div>
+        <div class="sub-label">DAYS</div>
       </div>
-      <div class="time-colon">:</div>
-      <div class="time-col">
-        <div class="time-digits" id="numHours">13</div>
-        <div class="time-label">HOURS</div>
+      <div class="colon-sep">:</div>
+      <div class="unit-block">
+        <div class="digit-pair" id="dHours">23</div>
+        <div class="sub-label">HOURS</div>
       </div>
-      <div class="time-colon">:</div>
-      <div class="time-col">
-        <div class="time-digits" id="numMinutes">32</div>
-        <div class="time-label">MINUTES</div>
+      <div class="colon-sep">:</div>
+      <div class="unit-block">
+        <div class="digit-pair" id="dMinutes">08</div>
+        <div class="sub-label">MINUTES</div>
       </div>
-      <div class="time-colon">:</div>
-      <div class="time-col">
-        <div class="time-digits" id="numSeconds">00</div>
-        <div class="time-label">SECONDS</div>
+      <div class="colon-sep">:</div>
+      <div class="unit-block">
+        <div class="digit-pair" id="dSeconds">00</div>
+        <div class="sub-label">SECONDS</div>
       </div>
     </div>
   </div>
 
-  <!-- Bottom GTU Sem 7 PDF Tracker -->
-  <div class="bottom-hud">
-    <div class="tracker-drawer" id="trackerDrawer">
-      <h4>GTU Sem 7 Audited PDF Sprint Checklist (231 Questions Total)</h4>
-      <div class="tracker-grid" id="trackerGrid"></div>
-    </div>
-    <div class="tracker-pill" onclick="document.getElementById('trackerDrawer').classList.toggle('open')">
-      ▲ ACTIVE SPRINT: 16–19 NOV — COMPILER DESIGN PDF (Q1–Q38) | CLICK FOR CHECKLIST ▲
-    </div>
-  </div>
-
-  <div class="letterbox-bottom"></div>
+  <!-- Bottom Timeline: ALL Exams Nov 2026 - Nov 2027 (Auto-hides after 2.5s!) -->
+  <div class="bottom-timeline auto-hide-ui" id="allPathsGrid"></div>
 </div>
 
-<audio id="customMp3" loop style="display:none"></audio>
+<!-- DIRECTLY LINKED TO YOUR music/Music.mp3 FILE -->
+<audio id="bloodMoonAudioEl" src="music/Music.mp3" loop preload="auto" style="display:none"></audio>
 
 <script>
 /* =========================================================================
-   1. INDEXED-DB PERMANENT FULL-HD STORAGE FOR ALL 4 WALLPAPERS
-   ========================================================================= */
-const DB_NAME = 'HarshDoomsdayDB_V4';
-const STORE_NAME = 'wallpapers';
-
-function openDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, 1);
-    req.onupgradeneeded = e => {
-      e.target.result.createObjectStore(STORE_NAME);
-    };
-    req.onsuccess = e => resolve(e.target.result);
-    req.onerror = e => reject(e);
-  });
-}
-
-async function saveImagesToDB(dataUrls) {
-  const db = await openDB();
-  const tx = db.transaction(STORE_NAME, 'readwrite');
-  const store = tx.objectStore(STORE_NAME);
-  store.put(dataUrls, 'harsh_4_wallpapers');
-}
-
-async function loadImagesFromDB() {
-  try {
-    const db = await openDB();
-    return new Promise(resolve => {
-      const tx = db.transaction(STORE_NAME, 'readonly');
-      const req = tx.objectStore(STORE_NAME).get('harsh_4_wallpapers');
-      req.onsuccess = () => resolve(req.result || null);
-      req.onerror = () => resolve(null);
-    });
-  } catch (e) {
-    return null;
-  }
-}
-
-function applyWallpapersToDOM(urls) {
-  for (let i = 0; i < 4; i++) {
-    const slot = document.getElementById('bgSlot' + i);
-    const url = urls[i % urls.length];
-    slot.style.backgroundImage = `url('${url}')`;
-  }
-}
-
-function handleMultiWallpapers(e) {
-  const files = Array.from(e.target.files);
-  if (!files.length) return;
-
-  const readers = files.slice(0, 4).map(file => new Promise(resolve => {
-    const r = new FileReader();
-    r.onload = ev => resolve(ev.target.result);
-    r.readAsDataURL(file);
-  }));
-
-  Promise.all(readers).then(urls => {
-    applyWallpapersToDOM(urls);
-    saveImagesToDB(urls);
-    document.getElementById('loaderModal').style.display = 'none';
-    unlockAudioEngine();
-  });
-}
-
-window.addEventListener('DOMContentLoaded', async () => {
-  const savedUrls = await loadImagesFromDB();
-  if (savedUrls && savedUrls.length > 0) {
-    applyWallpapersToDOM(savedUrls);
-    document.getElementById('loaderModal').style.display = 'none';
-    document.getElementById('audioUnlockPill').style.display = 'block';
-  }
-});
-
-/* =========================================================================
-   2. WALLPAPER SWITCHER & AUTO-CYCLE ENGINE
-   ========================================================================= */
-let currentBgIdx = 0;
-let autoCycleTimer = null;
-
-function activateWallpaper(idx, fromAuto) {
-  currentBgIdx = idx;
-  for (let i = 0; i < 4; i++) {
-    document.getElementById('bgSlot' + i).classList.toggle('active', i === idx);
-    document.getElementById('btnBg' + i).classList.toggle('active-bg', i === idx);
-  }
-  if (!fromAuto && autoCycleTimer) {
-    clearInterval(autoCycleTimer);
-    autoCycleTimer = null;
-    document.getElementById('btnCycle').textContent = '🔄 Auto-Cycle: OFF';
-  }
-}
-
-function toggleAutoCycle() {
-  const btn = document.getElementById('btnCycle');
-  if (autoCycleTimer) {
-    clearInterval(autoCycleTimer);
-    autoCycleTimer = null;
-    btn.textContent = '🔄 Auto-Cycle: OFF';
-  } else {
-    btn.textContent = '🔄 Auto-Cycle: 30s ON';
-    autoCycleTimer = setInterval(() => {
-      activateWallpaper((currentBgIdx + 1) % 4, true);
-    }, 30000);
-  }
-}
-
-/* =========================================================================
-   3. GOLDEN-EMERALD SPARKS & CATHEDRAL EMBERS (Matches your 4 images!)
-   ========================================================================= */
-const spCanvas = document.getElementById('sparksCanvas');
-const spCtx = spCanvas.getContext('2d');
-let sparks = [];
-
-function initSparks() {
-  spCanvas.width = window.innerWidth;
-  spCanvas.height = window.innerHeight;
-  sparks = Array.from({ length: 55 }, () => ({
-    x: Math.random() * spCanvas.width,
-    y: Math.random() * spCanvas.height,
-    r: Math.random() * 1.8 + 0.4,
-    vx: (Math.random() - 0.5) * 0.28,
-    vy: -Math.random() * 0.45 - 0.12,
-    gold: Math.random() > 0.45,
-    a: Math.random() * 0.65 + 0.15
-  }));
-}
-function animateSparks() {
-  spCtx.clearRect(0, 0, spCanvas.width, spCanvas.height);
-  for (const s of sparks) {
-    s.x += s.vx; s.y += s.vy;
-    if (s.y < 0) s.y = spCanvas.height;
-    if (s.x < 0) s.x = spCanvas.width;
-    if (s.x > spCanvas.width) s.x = 0;
-    spCtx.beginPath();
-    spCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-    spCtx.fillStyle = s.gold
-      ? `rgba(255, 225, 130, ${s.a})`
-      : `rgba(185, 255, 120, ${s.a})`;
-    spCtx.fill();
-  }
-  requestAnimationFrame(animateSparks);
-}
-window.addEventListener('resize', initSparks);
-initSparks();
-animateSparks();
-
-/* =========================================================================
-   4. WEB AUDIO ENGINE: "TIE-TIK" MECHANICAL CLOCK + DOOMSDAY SCORE
+   1. AUTOMATIC "music/Music.mp3" + "TIE-TIK" CLOCK ENGINE
    ========================================================================= */
 let audioCtx = null;
-let isAudioReady = false;
-let audioMode = 'cinema';
-let droneMaster = null;
-let bassOsc = null, fifthOsc = null, thirdOsc = null;
-let tieState = false;
-let chordStep = 0;
-let tickMultiplier = 1;
+let audioUnlocked = false;
+let audioMode = 'bloodmoon_orig';
+let tickToggle = false;
+const bloodMoonEl = document.getElementById('bloodMoonAudioEl');
 
-const villainChords = [
-  { b: 36.71, f: 110.00, t: 130.81 }, // Dm
-  { b: 29.14, f: 87.31,  t: 116.54 }, // Bb
-  { b: 49.00, f: 73.42,  t: 116.54 }, // Gm
-  { b: 27.50, f: 82.41,  t: 103.83 }  // A7(b9)
-];
+const JELLO_VARIANTS = {
+  bloodmoon_orig:  { rate: 1.00, vol: 0.85, doubleTick: false }, // 83 BPM Original
+  bloodmoon_slow:  { rate: 0.82, vol: 0.90, doubleTick: false }, // 67 BPM Slowed & Deepened
+  bloodmoon_fast:  { rate: 1.18, vol: 0.92, doubleTick: true  }, // 101 BPM Boss Overdrive + 2x Tick
+  bloodmoon_study: { rate: 0.74, vol: 0.32, doubleTick: false }, // 71 BPM Soft Study Mode
+  tickonly:        { rate: 1.00, vol: 0.00, doubleTick: false },
+  mute:            { rate: 1.00, vol: 0.00, doubleTick: false }
+};
 
-function unlockAudioEngine() {
+function unlockAndStartAudio() {
   if (!audioCtx) {
-    const AC = window.AudioContext || window.webkitAudioContext;
-    audioCtx = new AC();
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AudioContext();
   }
   if (audioCtx.state === 'suspended') audioCtx.resume();
-  isAudioReady = true;
-  document.getElementById('audioUnlockPill').style.display = 'none';
-  if (!droneMaster) initDoomOrchestra();
-  playTieTik(true);
+  audioUnlocked = true;
+  document.getElementById('soundUnlockBanner').style.display = 'none';
+  applyMusicVariant();
+  playTieTikSound(true);
 }
 
-function initDoomOrchestra() {
-  droneMaster = audioCtx.createGain();
-  const filter = audioCtx.createBiquadFilter();
-  filter.type = 'lowpass';
-  filter.frequency.value = 205;
-
-  const lfo = audioCtx.createOscillator();
-  const lfoG = audioCtx.createGain();
-  lfo.frequency.value = 0.15;
-  lfoG.gain.value = 95;
-  lfo.connect(lfoG);
-  lfoG.connect(filter.frequency);
-  lfo.start();
-
-  bassOsc = audioCtx.createOscillator();
-  fifthOsc = audioCtx.createOscillator();
-  thirdOsc = audioCtx.createOscillator();
-
-  bassOsc.type = 'sawtooth';
-  fifthOsc.type = 'sawtooth';
-  thirdOsc.type = 'triangle';
-
-  bassOsc.connect(filter);
-  fifthOsc.connect(filter);
-  thirdOsc.connect(filter);
-  filter.connect(droneMaster);
-  droneMaster.connect(audioCtx.destination);
-
-  bassOsc.start(); fifthOsc.start(); thirdOsc.start();
-  stepChord();
-  setInterval(stepChord, 6000);
-  updateOrchestraGain();
-}
-
-function stepChord() {
-  if (!audioCtx || !bassOsc) return;
-  const now = audioCtx.currentTime;
-  if (audioMode === 'study') {
-    bassOsc.frequency.setTargetAtTime(40, now, 0.5);
-    fifthOsc.frequency.setTargetAtTime(80, now, 0.5);
-    thirdOsc.frequency.setTargetAtTime(120, now, 0.5);
+function applyMusicVariant() {
+  const v = JELLO_VARIANTS[audioMode] || JELLO_VARIANTS.bloodmoon_orig;
+  if (!audioUnlocked || audioMode === 'mute' || audioMode === 'tickonly') {
+    bloodMoonEl.pause();
     return;
   }
-  const c = villainChords[chordStep % villainChords.length];
-  chordStep++;
-  bassOsc.frequency.setTargetAtTime(c.b, now, 0.8);
-  fifthOsc.frequency.setTargetAtTime(c.f, now, 0.8);
-  thirdOsc.frequency.setTargetAtTime(c.t, now, 0.8);
+  if ('preservesPitch' in bloodMoonEl) bloodMoonEl.preservesPitch = false;
+  if ('webkitPreservesPitch' in bloodMoonEl) bloodMoonEl.webkitPreservesPitch = false;
+  bloodMoonEl.playbackRate = v.rate;
+  bloodMoonEl.volume = v.vol;
+  bloodMoonEl.play().then(() => {
+    document.getElementById('soundUnlockBanner').style.display = 'none';
+  }).catch(() => {});
 }
 
-function updateOrchestraGain() {
-  if (!droneMaster || !audioCtx) return;
+window.addEventListener('DOMContentLoaded', () => {
+  bloodMoonEl.volume = 0.85;
+  bloodMoonEl.play().then(() => {
+    unlockAndStartAudio();
+  }).catch(() => {});
+});
+['click', 'pointerdown', 'keydown'].forEach(ev => {
+  window.addEventListener(ev, () => {
+    if (!audioUnlocked) unlockAndStartAudio();
+  }, { once: true });
+});
+
+/* Crisp Mechanical "Tie-Tik" Clock Escapement + Sub-Bass Thud */
+function playTieTikSound(isMainSecond) {
+  if (!audioUnlocked || !audioCtx || audioMode === 'mute') return;
+  if (audioCtx.state === 'suspended') audioCtx.resume();
   const now = audioCtx.currentTime;
-  if (audioMode === 'mute' || audioMode === 'tickonly') {
-    droneMaster.gain.setTargetAtTime(0.0001, now, 0.25);
-  } else if (audioMode === 'study') {
-    stepChord();
-    droneMaster.gain.setTargetAtTime(0.045, now, 0.35);
-  } else {
-    stepChord();
-    droneMaster.gain.setTargetAtTime(0.115, now, 0.35);
+  tickToggle = !tickToggle;
+
+  const clickOsc = audioCtx.createOscillator();
+  const clickGain = audioCtx.createGain();
+  const clickFilter = audioCtx.createBiquadFilter();
+
+  clickFilter.type = 'bandpass';
+  clickFilter.frequency.value = tickToggle ? 2450 : 1780;
+  clickFilter.Q.value = 5.5;
+
+  clickOsc.type = 'triangle';
+  clickOsc.frequency.setValueAtTime(tickToggle ? 1200 : 860, now);
+  clickOsc.frequency.exponentialRampToValueAtTime(160, now + 0.05);
+
+  const vol = audioMode === 'bloodmoon_study' ? 0.12 : 0.42;
+  clickGain.gain.setValueAtTime(vol, now);
+  clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+
+  clickOsc.connect(clickFilter);
+  clickFilter.connect(clickGain);
+  clickGain.connect(audioCtx.destination);
+  clickOsc.start(now);
+  clickOsc.stop(now + 0.065);
+
+  if (isMainSecond && audioMode !== 'bloodmoon_study') {
+    const thudOsc = audioCtx.createOscillator();
+    const thudGain = audioCtx.createGain();
+    thudOsc.type = 'sine';
+    thudOsc.frequency.setValueAtTime(tickToggle ? 86 : 68, now);
+    thudOsc.frequency.exponentialRampToValueAtTime(24, now + 0.24);
+
+    thudGain.gain.setValueAtTime(0.32, now);
+    thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+
+    thudOsc.connect(thudGain);
+    thudGain.connect(audioCtx.destination);
+    thudOsc.start(now);
+    thudOsc.stop(now + 0.28);
   }
 }
 
-function playTieTik(isMainSecond) {
-  if (!isAudioReady || !audioCtx || audioMode === 'mute') return;
-  const now = audioCtx.currentTime;
-  tieState = !tieState;
-
-  // 1. Crisp Mechanical Escapement ("Tie" vs "Tik")
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  const bp = audioCtx.createBiquadFilter();
-
-  bp.type = 'bandpass';
-  bp.frequency.value = tieState ? 2700 : 1850;
-  bp.Q.value = 5.8;
-
-  osc.type = 'triangle';
-  osc.frequency.setValueAtTime(tieState ? 1350 : 940, now);
-  osc.frequency.exponentialRampToValueAtTime(145, now + 0.048);
-
-  const vol = audioMode === 'study' ? 0.08 : 0.34;
-  gain.gain.setValueAtTime(vol, now);
-  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.058);
-
-  osc.connect(bp); bp.connect(gain); gain.connect(audioCtx.destination);
-  osc.start(now); osc.stop(now + 0.062);
-
-  // 2. Cathedral Reverb Echo
-  const echo = audioCtx.createOscillator();
-  const echoG = audioCtx.createGain();
-  echo.type = 'sine';
-  echo.frequency.setValueAtTime(tieState ? 680 : 470, now + 0.085);
-  echoG.gain.setValueAtTime(vol * 0.22, now + 0.085);
-  echoG.gain.exponentialRampToValueAtTime(0.001, now + 0.19);
-  echo.connect(echoG); echoG.connect(audioCtx.destination);
-  echo.start(now + 0.085); echo.stop(now + 0.2);
-
-  // 3. Deep Sub-Bass Thud on Full Second
-  if (isMainSecond && audioMode !== 'study') {
-    const sub = audioCtx.createOscillator();
-    const subG = audioCtx.createGain();
-    sub.type = 'sine';
-    sub.frequency.setValueAtTime(tieState ? 74 : 58, now);
-    sub.frequency.exponentialRampToValueAtTime(22, now + 0.25);
-    subG.gain.setValueAtTime(0.27, now);
-    subG.gain.exponentialRampToValueAtTime(0.001, now + 0.27);
-    sub.connect(subG); subG.connect(audioCtx.destination);
-    sub.start(now); sub.stop(now + 0.28);
-  }
-}
-
-function onAudioModeChange() {
-  audioMode = document.getElementById('audioSel').value;
-  if (!isAudioReady && audioMode !== 'mute') unlockAudioEngine();
-  updateOrchestraGain();
-}
-
-function loadCustomTrack(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const player = document.getElementById('customMp3');
-  player.src = URL.createObjectURL(file);
-  player.volume = 0.6;
-  player.play();
-  if (!isAudioReady) unlockAudioEngine();
+function updateAudioMode() {
+  audioMode = document.getElementById('audioModeSelect').value;
+  if (!audioUnlocked && audioMode !== 'mute') unlockAndStartAudio();
+  applyMusicVariant();
 }
 
 /* =========================================================================
-   5. LIVE COUNTDOWN ENGINE (MONTH : DAYS : HOURS : MINUTES : SECONDS)
+   2. COMPLETE EXAM TIMELINE (NOV 2026 - NOV 2027) + AUTO VARIANT MATCHING
    ========================================================================= */
-let lastSecVal = -1;
+let serverTimeOffsetMs = 0;
+let timeModeIdx = 1; // 10:30 AM GTU Start (click to toggle 10:00 AM reporting)
+let activeIdx = 1;   // Starts on 18 Dec MYDAYS ARE COMING
+let autoCycle = false;
+let cycleTimer = null;
+let lastSec = -1;
+
+const TIME_MODES = [
+  { hm: '10:00', short: '🕙 GTU: 10:00 AM' },
+  { hm: '10:30', short: '🕥 GTU: 10:30 AM' }
+];
+
+function getNextGtuExam(now, hm) {
+  const gtuPapers = [
+    { name: 'EXAM 1: MACHINE LEARNING', code: 'GTU 3170724', date: '01 DEC', start: `2026-12-01T${hm}:00+05:30`, end: '2026-12-01T13:00:00+05:30' },
+    { name: 'EXAM 2: COMPILER DESIGN',  code: 'GTU 3170701', date: '03 DEC', start: `2026-12-03T${hm}:00+05:30`, end: '2026-12-03T13:00:00+05:30' },
+    { name: 'EXAM 3: CLOUD COMPUTING',  code: 'GTU 3170717', date: '08 DEC', start: `2026-12-08T${hm}:00+05:30`, end: '2026-12-08T13:00:00+05:30' },
+    { name: 'EXAM 4: ARTIFICIAL INTEL', code: 'GTU 3170716', date: '14 DEC', start: `2026-12-14T${hm}:00+05:30`, end: '2026-12-14T13:00:00+05:30' },
+    { name: 'EXAM 5: MOBILE APP DEV',   code: 'GTU 3170726', date: '16 DEC', start: `2026-12-16T${hm}:00+05:30`, end: '2026-12-16T13:00:00+05:30' },
+    { name: 'EXAM 6: DISTRIBUTED SYS',  code: 'GTU 3170719', date: '18 DEC', start: `2026-12-18T${hm}:00+05:30`, end: '2026-12-18T13:00:00+05:30' }
+  ];
+  const next = gtuPapers.find(p => now < new Date(p.end)) || gtuPapers[gtuPapers.length - 1];
+  return {
+    short: `⚔️ ${next.date}: GTU NEXT`,
+    title: next.name,
+    code: `${next.code} // ${next.date} • ${hm} AM IST`,
+    dateStr: `${next.date} • ${hm} AM`,
+    startIso: next.start,
+    endIso: next.end,
+    bgIdx: 2,
+    variant: 'bloodmoon_fast'
+  };
+}
+
+function buildFullCareerTimeline(now) {
+  const hm = TIME_MODES[timeModeIdx].hm;
+  return [
+    getNextGtuExam(now, hm),
+    {
+      short: '🟢 18 DEC: MYDAYS',
+      title: 'MYDAYS ARE COMING',
+      code: 'GTU SEM 7 FINALE // 18 DEC 2026 • 01:00 PM IST',
+      dateStr: '18 DEC • 01:00 PM',
+      startIso: '2026-12-18T13:00:00+05:30',
+      endIso: '2026-12-18T13:00:00+05:30',
+      bgIdx: 0, variant: 'bloodmoon_orig'
+    },
+    {
+      short: '👑 06 FEB: GATE 2027',
+      title: 'GATE 2027 CS',
+      code: 'IIT MADRAS GATE CS // 06 FEB 2027 • 09:30 AM IST',
+      dateStr: '06 FEB • 09:30 AM',
+      startIso: '2027-02-06T09:30:00+05:30',
+      endIso: '2027-02-06T12:30:00+05:30',
+      bgIdx: 1, variant: 'bloodmoon_slow'
+    },
+    {
+      short: '☢️ 14 MAR: BARC OCES',
+      title: 'BARC OCES 2027 CBT',
+      code: 'BARC SCIENTIFIC OFFICER C // 14 MAR 2027 • 09:00 AM IST',
+      dateStr: '14 MAR • BARC CBT',
+      startIso: '2027-03-14T09:00:00+05:30',
+      endIso: '2027-03-14T11:00:00+05:30',
+      bgIdx: 1, variant: 'bloodmoon_fast'
+    },
+    {
+      short: '🛡️ 02 APR: DRDO & PSU',
+      title: 'DRDO & PSU SELECTION',
+      code: 'DRDO SCIENTIST B • BEL PE • ECIL GET • BARC UPLOAD',
+      dateStr: '02 APR • DRDO/BARC',
+      startIso: '2027-04-02T09:00:00+05:30',
+      endIso: '2027-04-02T17:00:00+05:30',
+      bgIdx: 3, variant: 'bloodmoon_orig'
+    },
+    {
+      short: '🎙️ 12 MAY: BARC INTERVIEW',
+      title: 'BARC & SEM 8 FINALE',
+      code: 'BARC MUMBAI INTERVIEWS & GTU PDC // MAY-JUN 2027',
+      dateStr: '12 MAY • MUMBAI',
+      startIso: '2027-05-12T09:00:00+05:30',
+      endIso: '2027-06-12T17:00:00+05:30',
+      bgIdx: 0, variant: 'bloodmoon_study'
+    },
+    {
+      short: '🏦 28 AUG: IBPS SO PRE',
+      title: 'IBPS SO IT OFFICER',
+      code: 'IBPS SO PRELIMS (AUG) & MAINS (NOV 2027)',
+      dateStr: 'LATE AUG • IBPS SO',
+      startIso: '2027-08-28T09:00:00+05:30',
+      endIso: '2027-08-28T11:00:00+05:30',
+      bgIdx: 3, variant: 'bloodmoon_slow'
+    },
+    {
+      short: '🚀 19 SEP: ISRO & NIC',
+      title: 'ISRO & NIC SCIENTIST B',
+      code: 'ISRO ICRB SCIENTIST SC & NIC SCIENTIST B // SEP 2027',
+      dateStr: 'SEP-OCT • ISRO/NIC',
+      startIso: '2027-09-19T09:30:00+05:30',
+      endIso: '2027-09-19T12:30:00+05:30',
+      bgIdx: 1, variant: 'bloodmoon_orig'
+    }
+  ];
+}
+
+let MILESTONES = buildFullCareerTimeline(new Date());
+
+function buildBottomGrid() {
+  const g = document.getElementById('allPathsGrid');
+  g.innerHTML = '';
+  MILESTONES.forEach((m, i) => {
+    const d = document.createElement('div');
+    d.className = 'path-box' + (i === activeIdx ? ' active-card' : '');
+    d.id = 'card' + i;
+    d.onclick = () => selectCard(i);
+    d.innerHTML = `
+      <div class="pb-name">${m.short}</div>
+      <div class="pb-time" id="miniT${i}">--:--:--:--:--</div>
+      <div class="pb-date">${m.dateStr}</div>
+    `;
+    g.appendChild(d);
+  });
+}
+
+function selectCard(idx) {
+  autoCycle = false;
+  if (cycleTimer) clearInterval(cycleTimer);
+  document.getElementById('btnDir').textContent = '🎥 Cycle: OFF';
+  document.getElementById('btnDir').classList.remove('active-btn');
+  applyCard(idx);
+}
+
+function applyCard(idx) {
+  activeIdx = idx;
+  const m = MILESTONES[idx];
+  if (audioMode !== 'mute' && audioMode !== 'tickonly') {
+    audioMode = m.variant;
+    document.getElementById('audioModeSelect').value = m.variant;
+    applyMusicVariant();
+  }
+  setWallpaper(m.bgIdx);
+  for (let i = 0; i < MILESTONES.length; i++) {
+    const el = document.getElementById('card' + i);
+    if (el) el.classList.toggle('active-card', i === idx);
+  }
+  updateDoomsdayClock();
+}
+
+function cycleTimeMode() {
+  timeModeIdx = (timeModeIdx + 1) % TIME_MODES.length;
+  document.getElementById('examTimeModeBadge').textContent = TIME_MODES[timeModeIdx].short;
+  MILESTONES = buildFullCareerTimeline(getTrueNow());
+  buildBottomGrid();
+  updateDoomsdayClock();
+}
+
+function toggleDirector() {
+  autoCycle = !autoCycle;
+  const btn = document.getElementById('btnDir');
+  btn.textContent = `🎥 Cycle: ${autoCycle ? 'ON' : 'OFF'}`;
+  btn.classList.toggle('active-btn', autoCycle);
+  if (cycleTimer) clearInterval(cycleTimer);
+  if (autoCycle) {
+    cycleTimer = setInterval(() => {
+      applyCard((activeIdx + 1) % MILESTONES.length);
+    }, 10000);
+  }
+}
+
+function setWallpaper(bgIdx) {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('bg' + i).classList.toggle('active', i === bgIdx);
+    document.getElementById('btnW' + i).classList.toggle('active-btn', i === bgIdx);
+  }
+}
+
+function forceBg(bgIdx) {
+  autoCycle = false;
+  if (cycleTimer) clearInterval(cycleTimer);
+  document.getElementById('btnDir').textContent = '🎥 Cycle: OFF';
+  document.getElementById('btnDir').classList.remove('active-btn');
+  setWallpaper(bgIdx);
+}
+
+/* =========================================================================
+   3. AUTO-HIDE ALL CLUTTER AFTER 2.5 SECONDS OF NO MOUSE MOVEMENT
+   ========================================================================= */
+let idleTimer = null;
+function wakeScreenUI() {
+  document.body.classList.remove('idle-cinema');
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => {
+    if (document.getElementById('todayModal').style.display !== 'block') {
+      document.body.classList.add('idle-cinema');
+    }
+  }, 2500);
+}
+window.addEventListener('mousemove', wakeScreenUI);
+window.addEventListener('touchstart', wakeScreenUI);
+window.addEventListener('keydown', wakeScreenUI);
+setTimeout(() => document.body.classList.add('idle-cinema'), 3000);
+
+/* =========================================================================
+   4. TODAY'S 3-LINE PLAN MODAL
+   ========================================================================= */
+const DAILY_PLAN_DB = {
+  '2026-11-16': '<b>Mon 16 Nov - Compiler Design (Units 4-5, SDT & ICG)</b><br>• <b>Morning (9:30-11:30):</b> S-attributed vs L-attributed SDDs, syntax trees, 3-address code (quadruples, triples, indirect triples), SSA + Compiler PDF Q1-Q15.<br>• <b>Afternoon (2:00-4:00):</b> 4 GTU problems on SDT and 3-address code.<br>• <b>Night (8:00-10:00) PYQs:</b> 2026 CS1 Q53; 2025 CS2 Q22; 2024 CS1 Q37; 2024 CS2 Q29, Q43; 2023 CS Q60; 2022 CS Q65.',
+  '2026-11-17': '<b>Tue 17 Nov - Compiler Design (Units 6-7, Runtime & Optimization)</b><br>• <b>Morning:</b> Activation records, basic blocks, CFG, DAG, liveness analysis, code optimization (Compiler PDF Q16-Q25).<br>• <b>Afternoon:</b> Draw CFGs and DAGs. Compute IN[B]/OUT[B] for 2 GTU problems.<br>• <b>Night PYQs:</b> 2026 CS1 Q42; 2026 CS2 Q45; 2025 CS1 Q13, Q52; 2024 CS1 Q39; 2023 CS Q36, Q37.',
+  '2026-11-18': '<b>Wed 18 Nov - Compiler Paper Lock-In</b><br>• <b>Morning:</b> Solve Winter 2024 & Summer 2025 GTU Compiler (3170701) papers + Compiler PDF Q26-Q38.<br>• <b>Afternoon:</b> Solve Winter 2023 & Summer 2024 papers.<br>• <b>Night:</b> Make a 4-page Compiler cheat sheet.'
+};
+
+function toggleTodayModal() {
+  const m = document.getElementById('todayModal');
+  if (m.style.display === 'block') { m.style.display = 'none'; return; }
+  const now = getTrueNow();
+  const key = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).format(now);
+  document.getElementById('todayModalTitle').textContent = `📅 PLAN FOR ${key} (IST)`;
+  document.getElementById('todayModalBody').innerHTML =
+    DAILY_PLAN_DB[key] || '<b>Active Phase:</b> Follow today\'s 3 blocks (Morning 9:30-11:30 Learn, Afternoon 2:00-4:00 Write Practice, Night 8:00-10:00 PYQs & GTU PDFs).';
+  m.style.display = 'block';
+}
+
+/* =========================================================================
+   5. LIVE NETWORK IST FETCHER & COUNTDOWN LOOP
+   ========================================================================= */
+async function syncLiveNetworkTime() {
+  try {
+    const t0 = Date.now();
+    const res = await fetch(window.location.href, { method: 'HEAD', cache: 'no-store' });
+    const dStr = res.headers.get('date');
+    if (dStr) {
+      const rtt = (Date.now() - t0) / 2;
+      serverTimeOffsetMs = (new Date(dStr).getTime() + rtt) - Date.now();
+    }
+  } catch (e) {}
+}
+
+function getTrueNow() {
+  return new Date(Date.now() + serverTimeOffsetMs);
+}
+
 function pad2(n) { return String(Math.max(0, n)).padStart(2, '0'); }
 
-function updateClockLoop() {
-  const parts = document.getElementById('milestoneSel').value.split('|');
-  const target = new Date(parts[0]);
-  const now = new Date();
-
-  if (now >= target) {
-    ['numMonth','numDays','numHours','numMinutes','numSeconds'].forEach(id => document.getElementById(id).textContent = '00');
-    return;
-  }
-
-  let months = (target.getFullYear() - now.getFullYear()) * 12 + (target.getMonth() - now.getMonth());
+function computeCalendarDiff(targetDate, now) {
+  if (now >= targetDate) return { m: '00', d: '00', h: '00', min: '00', s: '00', rawS: 0 };
+  let months = (targetDate.getFullYear() - now.getFullYear()) * 12 + (targetDate.getMonth() - now.getMonth());
   let anchor = new Date(now.getFullYear(), now.getMonth() + months, now.getDate(),
                         now.getHours(), now.getMinutes(), now.getSeconds());
-  if (anchor > target) {
+  if (anchor > targetDate) {
     months--;
     anchor = new Date(now.getFullYear(), now.getMonth() + months, now.getDate(),
                       now.getHours(), now.getMinutes(), now.getSeconds());
   }
+  let rem = targetDate - anchor;
+  const d = Math.floor(rem / 86400000); rem -= d * 86400000;
+  const h = Math.floor(rem / 3600000); rem -= h * 3600000;
+  const min = Math.floor(rem / 60000); rem -= min * 60000;
+  const s = Math.floor(rem / 1000);
+  return { m: pad2(months), d: pad2(d), h: pad2(h), min: pad2(min), s: pad2(s), rawS: s };
+}
 
-  let rem = target - anchor;
-  const days = Math.floor(rem / 86400000); rem -= days * 86400000;
-  const hours = Math.floor(rem / 3600000); rem -= hours * 3600000;
-  const minutes = Math.floor(rem / 60000); rem -= minutes * 60000;
-  const seconds = Math.floor(rem / 1000);
+function updateDoomsdayClock() {
+  const now = getTrueNow();
+  MILESTONES[0] = getNextGtuExam(now, TIME_MODES[timeModeIdx].hm);
 
-  document.getElementById('numMonth').textContent = pad2(months);
-  document.getElementById('numDays').textContent = pad2(days);
-  document.getElementById('numHours').textContent = pad2(hours);
-  document.getElementById('numMinutes').textContent = pad2(minutes);
-  const secEl = document.getElementById('numSeconds');
-  secEl.textContent = pad2(seconds);
+  const istString = new Intl.DateTimeFormat('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    weekday: 'short', day: '2-digit', month: 'short',
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+  }).format(now).toUpperCase();
+  document.getElementById('networkTimeDisplay').textContent = `🛰️ IST: ${istString}`;
 
-  if (seconds !== lastSecVal) {
-    lastSecVal = seconds;
-    secEl.classList.add('tick-pop');
-    const flash = document.getElementById('tickFlashOverlay');
-    flash.style.opacity = '1';
-    setTimeout(() => {
-      secEl.classList.remove('tick-pop');
-      flash.style.opacity = '0';
-    }, 115);
+  MILESTONES.forEach((m, idx) => {
+    const tStart = new Date(m.startIso);
+    const tEnd = new Date(m.endIso);
+    const miniEl = document.getElementById('miniT' + idx);
 
-    playTieTik(true);
-    if (audioMode === 'urgent' || tickMultiplier === 2) {
-      setTimeout(() => playTieTik(false), 500);
+    let activeTarget = tStart;
+    if (now >= tEnd) {
+      if (miniEl) miniEl.textContent = '✅ DONE';
+    } else {
+      const d = computeCalendarDiff(tStart, now);
+      if (miniEl) miniEl.textContent = `${d.m}:${d.d}:${d.h}:${d.min}:${d.s}`;
     }
+
+    if (idx === activeIdx) {
+      const diff = computeCalendarDiff(activeTarget, now);
+      document.getElementById('pathKicker').textContent = m.code;
+      document.getElementById('headingText').textContent = m.title;
+      document.getElementById('dMonth').textContent = diff.m;
+      document.getElementById('dDays').textContent = diff.d;
+      document.getElementById('dHours').textContent = diff.h;
+      document.getElementById('dMinutes').textContent = diff.min;
+      const secEl = document.getElementById('dSeconds');
+      secEl.textContent = diff.s;
+
+      if (diff.rawS !== lastSec) {
+        lastSec = diff.rawS;
+        secEl.classList.add('tick-pulse');
+        setTimeout(() => secEl.classList.remove('tick-pulse'), 110);
+        playTieTikSound(true);
+        const v = JELLO_VARIANTS[audioMode] || JELLO_VARIANTS.bloodmoon_orig;
+        if (v.doubleTick) {
+          setTimeout(() => playTieTikSound(false), 500);
+        }
+      }
+    }
+  });
+}
+
+/* =========================================================================
+   6. SPARKS & STARTUP
+   ========================================================================= */
+const ashCanvas = document.getElementById('ashCanvas');
+const ashCtx = ashCanvas.getContext('2d');
+let motes = [];
+function initMotes() {
+  ashCanvas.width = window.innerWidth;
+  ashCanvas.height = window.innerHeight;
+  motes = Array.from({ length: 42 }, () => ({
+    x: Math.random() * ashCanvas.width,
+    y: Math.random() * ashCanvas.height,
+    r: Math.random() * 1.6 + 0.4,
+    vx: (Math.random() - 0.5) * 0.22,
+    vy: -Math.random() * 0.35 - 0.08,
+    alpha: Math.random() * 0.55 + 0.15
+  }));
+}
+function animateMotes() {
+  ashCtx.clearRect(0, 0, ashCanvas.width, ashCanvas.height);
+  for (const m of motes) {
+    m.x += m.vx; m.y += m.vy;
+    if (m.y < 0) m.y = ashCanvas.height;
+    if (m.x < 0) m.x = ashCanvas.width;
+    if (m.x > ashCanvas.width) m.x = 0;
+    ashCtx.beginPath();
+    ashCtx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+    ashCtx.fillStyle = `rgba(215, 255, 175, ${m.alpha})`;
+    ashCtx.fill();
   }
+  requestAnimationFrame(animateMotes);
 }
-setInterval(updateClockLoop, 100);
-updateClockLoop();
+window.addEventListener('resize', initMotes);
 
-function onMilestoneChange() {
-  const parts = document.getElementById('milestoneSel').value.split('|');
-  document.getElementById('headerTitle').textContent = parts[1];
-  const bgIdx = parseInt(parts[2], 10);
-  tickMultiplier = parseInt(parts[3], 10);
-  activateWallpaper(bgIdx, false);
-  updateClockLoop();
-}
-
-function promptHeading() {
-  const el = document.getElementById('headerTitle');
-  const next = prompt('Enter custom heading:', el.textContent);
-  if (next && next.trim()) el.textContent = next.trim().toUpperCase();
-}
-function toggleFullscreen() {
+function toggleFS() {
   if (!document.fullscreenElement) document.documentElement.requestFullscreen();
   else document.exitFullscreen();
 }
 
-/* =========================================================================
-   6. GTU SEM 7 AUDITED PDF CHECKLIST
-   ========================================================================= */
-const sprintItems = [
-  { id: 'u1', title: '16–19 Nov: Compiler Design PDF (All 38 Qs)', text: 'Sec 1 Pass First (Q1–Q25) + Sec 2 Score More (Q26–Q38, incl. Summer 2026 CLR Table)' },
-  { id: 'u2', title: '20–21 Nov: Mobile App Dev PDF (24 Qs)', text: 'Sec 1 Pass First (Q1–Q24: Lifecycles, Intents, SQLite, Permissions, Retrofit, Firebase)' },
-  { id: 'u3', title: '22–23 Nov: Distributed System PDF (24 Qs)', text: 'Sec 1 Pass First (Q1–Q24: RPC/RMI, Lamport/Vector Clocks, Election, 2PC, Kerberos)' },
-  { id: 'u4', title: '24–25 Nov: Artificial Intelligence PDF (32 Qs)', text: 'Sec 1 Pass First (Q1–Q32: Water Jug, A*, SEND+MORE=MONEY, Resolution, Bayes, Prolog)' },
-  { id: 'u5', title: '26 Nov: Cloud Computing PDF (22 Qs)', text: 'Sec 1 Pass First (Q1–Q22: NIST, IaaS/PaaS/SaaS, Hypervisors, Live Migration, SLA, IAM)' },
-  { id: 'u6', title: '27–30 Nov: Machine Learning PDF (All 36 Qs)', text: 'Sec 1 (Q1–Q24) + Sec 2 (Q25–Q36) -> Ready for 01 Dec Morning Exam!' }
-];
-const tGrid = document.getElementById('trackerGrid');
-sprintItems.forEach(item => {
-  const c = localStorage.getItem(item.id) === 'true' ? 'checked' : '';
-  const div = document.createElement('div');
-  div.className = 't-card';
-  div.innerHTML = `<strong>${item.title}</strong>
-    <label><input type="checkbox" ${c} onchange="localStorage.setItem('${item.id}', this.checked)">
-    <span>${item.text}</span></label>`;
-  tGrid.appendChild(div);
-});
+initMotes();
+animateMotes();
+buildBottomGrid();
+syncLiveNetworkTime();
+setInterval(syncLiveNetworkTime, 60000);
+updateDoomsdayClock();
+setInterval(updateDoomsdayClock, 100);
 </script>
 </body>
 </html>
